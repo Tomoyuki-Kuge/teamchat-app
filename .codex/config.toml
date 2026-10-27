@@ -1,0 +1,20 @@
+default_permissions = "workspace-no-env"
+
+[permissions.workspace-no-env]
+extends = ":workspace"
+
+[permissions.workspace-no-env.filesystem.":workspace_roots"]
+"." = "write"
+".env" = "deny"
+".env.*" = "deny"
+"docs/spec.md" = "read"
+"mockup" = "read"
+
+[[hooks.PostToolUse]]
+matcher = "apply_patch|Edit|Write"
+
+[[hooks.PostToolUse.hooks]]
+type = "command"
+command = "./vendor/bin/sail artisan test"
+timeout = 600
+statusMessage = "編集後にSailのテストを実行しています"

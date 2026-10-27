@@ -54,7 +54,7 @@ Laravel標準のMVC構成に従って実装してください。
 
 ## テスト方針
 
-PHPUnit 10を使用します。ファイル名は`*Test.php`、メソッド名は検証内容が分かる`test_*`形式にしてください。HTTP、認可、DBを扱うシナリオは機能テスト、独立したロジックは単体テストに配置します。`docs/design/acceptance.md`を基に、入力チェックや権限不足のケースも検証してください。DBを扱うテストには、設定済みの`testing`データベースを使用します。カバレッジの数値目標は設定されていません。対象を絞る場合は`./vendor/bin/sail artisan test --filter=ExampleTest`を使います。
+PHPUnit 10を使用します。ファイル名は`*Test.php`、メソッド名は検証内容が分かる`test_*`形式にしてください。HTTP、認可、DBを扱うシナリオは機能テスト、独立したロジックは単体テストに配置します。`docs/design/acceptance.md`を基に、入力チェックや権限不足のケースも検証してください。DBを扱うテストには、設定済みの`testing`データベースを使用します。カバレッジの数値目標は設定されていません。チャンネル関連のテストを絞る例は`./vendor/bin/sail artisan test --filter=ChannelTest`です。
 
 ## コミット・プルリクエストの方針
 

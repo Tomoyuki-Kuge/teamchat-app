@@ -1,0 +1,11 @@
+prefix_rule(
+    pattern = ["./vendor/bin/sail", "test"],
+    decision = "allow",
+    justification = "Run the project test suite through Sail without prompting.",
+)
+
+prefix_rule(
+    pattern = ["./vendor/bin/sail", "artisan", "test"],
+    decision = "allow",
+    justification = "Run the project test suite through Artisan and Sail without prompting.",
+)

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Playwright UAT"
+  short_description: "Playwright MCP で画面受け入れ確認"
