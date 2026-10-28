@@ -9,3 +9,9 @@ prefix_rule(
     decision = "allow",
     justification = "Run the project test suite through Artisan and Sail without prompting.",
 )
+
+prefix_rule(
+    pattern = ["./vendor/bin/sail", "pint"],
+    decision = "allow",
+    justification = "Format PHP code through Laravel Pint and Sail without prompting.",
+)

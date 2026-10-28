@@ -7,6 +7,7 @@ extends = ":workspace"
 "." = "write"
 ".env" = "deny"
 ".env.*" = "deny"
+".env.example" = "read"
 "docs/spec.md" = "read"
 "mockup" = "read"
 
@@ -18,3 +19,9 @@ type = "command"
 command = "./vendor/bin/sail artisan test"
 timeout = 600
 statusMessage = "編集後にSailのテストを実行しています"
+
+[[hooks.PostToolUse.hooks]]
+type = "command"
+command = "./vendor/bin/sail pint"
+timeout = 600
+statusMessage = "編集後にSailのPintで整形しています"

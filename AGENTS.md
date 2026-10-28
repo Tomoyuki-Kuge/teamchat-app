@@ -44,6 +44,22 @@ Laravel標準のMVC構成に従って実装してください。
 
 承認済みの画面設計ではJavaScriptを使わず、リンクとフォーム送信で操作します。動作を変更する前に関連する設計書を更新し、実装との整合性を保ってください。図はMarkdown内にMermaidで記述します。
 
+## 守ってほしい書き方
+
+実装を始める前に、変更に関係する次の決めごとを確認してください。内容と理由は参照先にまとめています。
+
+| 実装する箇所 | 決めごとの在りか |
+| --- | --- |
+| 認可・対象の取得・拒否する順序 | [permissions-api.md「権限マトリクス」](docs/design/permissions-api.md#権限マトリクス)、[behavior.md「例外方針」](docs/design/behavior.md#例外方針) |
+| 削除処理・用途ごとの取得条件 | [data.md「削除状態と取得条件」](docs/design/data.md#削除状態と取得条件)、[behavior.md「メッセージの状態遷移」](docs/design/behavior.md#メッセージの状態遷移) |
+| 保存する値・一意性・所属・返信の制約 | [data.md「テーブル定義書」](docs/design/data.md#テーブル定義書)、[data.md「保存しない表示項目・集計」](docs/design/data.md#保存しない表示項目集計) |
+| トランザクション・同時操作・編集競合 | [behavior.md「更新の整合性と同時操作」](docs/design/behavior.md#更新の整合性と同時操作)、[behavior.md「本文編集の競合確認（Q-30）」](docs/design/behavior.md#本文編集の競合確認q-30) |
+| 入力の扱い・検証・エラー文言 | [screens.md「入力チェックとエラーメッセージ」](docs/design/screens.md#入力チェックとエラーメッセージ)、[data.md「テーブル定義書」](docs/design/data.md#テーブル定義書) |
+| 検索の比較・強調・ページ分割 | [permissions-api.md「検索用の比較と強調表示（Q-35）」](docs/design/permissions-api.md#検索用の比較と強調表示q-35)、[data.md「削除状態と取得条件」](docs/design/data.md#削除状態と取得条件) |
+| 画面操作・表示範囲・フォームの戻り先 | [screens.md「操作・表示の共通方針」](docs/design/screens.md#操作表示の共通方針)、[permissions-api.md「リンクで引き継ぐ表示範囲と戻り先」](docs/design/permissions-api.md#リンクで引き継ぐ表示範囲と戻り先) |
+| 公開APIの出力・ページ分割・エラー | [permissions-api.md「公開APIの共通契約」以降](docs/design/permissions-api.md#公開apiの共通契約) |
+| 障害応答・ログ・保存後の失敗 | [behavior.md「例外方針」](docs/design/behavior.md#例外方針)、[behavior.md「更新の整合性と同時操作」](docs/design/behavior.md#更新の整合性と同時操作) |
+
 ## 変更時の注意
 
 - Laravelコマンドは`./vendor/bin/sail artisan`経由で実行してください。
