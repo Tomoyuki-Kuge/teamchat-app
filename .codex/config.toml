@@ -1,15 +1,28 @@
 default_permissions = "workspace-no-env"
 
+[features]
+network_proxy = true
+
 [permissions.workspace-no-env]
 extends = ":workspace"
 
 [permissions.workspace-no-env.filesystem.":workspace_roots"]
 "." = "write"
 ".env" = "deny"
-".env.*" = "deny"
 ".env.example" = "read"
 "docs/spec.md" = "read"
 "mockup" = "read"
+
+[permissions.workspace-no-env.network]
+enabled = true
+
+[permissions.workspace-no-env.network.domains]
+"github.com" = "allow"
+"api.github.com" = "allow"
+
+[permissions.workspace-no-env.network.unix_sockets]
+"/Users/tomoyuki/.docker/run/docker.sock" = "allow"
+"/private/tmp/com.apple.launchd.YtF4AGhHjS/Listeners" = "allow"
 
 [[hooks.PostToolUse]]
 matcher = "apply_patch|Edit|Write"
