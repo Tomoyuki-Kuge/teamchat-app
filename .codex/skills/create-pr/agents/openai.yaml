@@ -1,0 +1,4 @@
+interface:
+  display_name: "プルリクエスト作成"
+  short_description: "対象差分と検証根拠を確認し、AGENTS.mdの型でPRを作成・更新する"
+  default_prompt: "$create-pr を使って、今回の変更を確認し、AGENTS.mdの型に沿ったプルリクエストを作成してください。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Issueの実装準備"
+  short_description: "設計と現状を読み、規模に応じて計画か変更概要を示して承認を得る"
+  default_prompt: "$implementation-prep を使って、対象Issueを読み、規模に応じてPlanモードで計画を立てるか変更概要を示し、承認を得てから着手してください。"
