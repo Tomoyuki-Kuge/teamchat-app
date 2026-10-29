@@ -81,15 +81,16 @@ PCブラウザで操作し、各行を個別に確認する。初期データの
 | ID | 何を確かめるか | 区分 | 元になった設計書 |
 |:--|:--|:--|:--|
 | TP-1-1 | 自己登録、確認用パスワードの一致、自動ログイン、登録後のチャンネル一覧への遷移 | 正常系 | [features.md](features.md) F-01、[screens.md](screens.md) SC-02、[permissions-api.md](permissions-api.md) 認証ルート |
-| TP-1-2 | 登録の必須・メール形式・確認不一致、表示名30文字／超過、パスワード7文字／8文字・128文字／129文字、正規化後のメール255文字／256文字 | 境界値 | [screens.md](screens.md) 入力チェック、[features.md](features.md) F-20、[questions.md](questions.md) Q-37・Q-38 |
+| TP-1-2 | 登録の必須・メール形式・確認不一致、表示名30文字／超過、パスワード7文字／8文字・72文字／73文字、正規化後のメール255文字／256文字 | 境界値 | [screens.md](screens.md) 入力チェック、[features.md](features.md) F-20、[questions.md](questions.md) Q-37・Q-38 |
 | TP-1-3 | メールの前後空白・改行除去とドメイン小文字化が保存・重複確認・ログインで一致し、ローカル部の大小・幅・Unicode差とパスワードは変換しないこと | 境界値 | [questions.md](questions.md) Q-32、[screens.md](screens.md) 入力チェック、[data.md](data.md) users |
 | TP-1-4 | 正規化後のメール重複と同時登録の一意制約違反が、登録済みの入力エラーになること | 異常系 | [screens.md](screens.md) SC-02、[data.md](data.md) users、[behavior.md](behavior.md) 例外方針 |
 | TP-1-5 | ログイン・期限切れ後の再ログインは常に一覧へ遷移し、ログイン済みのログイン／登録画面へのアクセスも一覧へ戻ること | 正常系 | [permissions-api.md](permissions-api.md) 認証ルート、[behavior.md](behavior.md) 例外方針 |
 | TP-1-6 | 存在しないメールと誤パスワードの失敗文言が共通で、認証されないこと | 異常系 | [features.md](features.md) F-02、[screens.md](screens.md) SC-01 |
 | TP-1-7 | ログアウト後に認証が必要な画面を利用できないこと | 正常系 | [features.md](features.md) F-03、[permissions-api.md](permissions-api.md) 共通ルール |
 | TP-1-8 | 未ログイン・ログイン期限切れはログイン画面へ302で移動し、未完了の変更を保存しないこと | 異常系 | [behavior.md](behavior.md) 例外方針、[permissions-api.md](permissions-api.md) 共通ルール |
-| TP-1-9 | CSRF不正・期限切れは419で送信を拒否し、ログイン期限切れと重なってもCSRF検証を優先して自動再送しないこと | 異常系 | [behavior.md](behavior.md) 例外方針、[permissions-api.md](permissions-api.md) 共通ルール |
+| TP-1-9 | CSRF不正・期限切れの応答・転送がbehavior.mdの例外方針に従い、認証・試行制限より先に拒否して自動再送しないこと | 異常系 | [behavior.md](behavior.md) 例外方針、[permissions-api.md](permissions-api.md) 共通ルール |
 | TP-1-10 | メールは登録・ログインとも正規化後の上限を検証して切り捨てず、パスワードは前後空白・大小・Unicodeを変換せず全体をArgon2idで保存・照合し、ログインに登録用の最小8文字検証を流用しないこと | 正常系 | [data.md](data.md) users、[screens.md](screens.md) 入力チェック、[questions.md](questions.md) Q-37・Q-38 |
+| TP-1-11 | Q-39の試行制限と期限後の復帰、メール正規化後のキーとIPの分離、CSRF検証の優先 | 異常系 | [behavior.md](behavior.md#fortifyによる認証の実装issue-1) Q-39 |
 
 ### チャンネル
 

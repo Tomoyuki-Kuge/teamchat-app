@@ -20,7 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password_hash',
     ];
 
     /**
@@ -29,9 +29,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'password_hash',
         'remember_token',
     ];
+
+    // Laravelの認証処理に、照合に使うpassword_hashカラムを教えます。
+    public function getAuthPassword(): string
+    {
+        return $this->password_hash;
+    }
 
     /**
      * The attributes that should be cast.
@@ -40,6 +46,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'password_hash' => 'hashed',
     ];
 }

@@ -12,6 +12,9 @@ class TrimStrings extends Middleware
      * @var array<int, string>
      */
     protected $except = [
+        // 表示名は入力を保持し、メールの空白は専用の処理で取り除きます。
+        'name',
+        'email',
         'current_password',
         'password',
         'password_confirmation',
