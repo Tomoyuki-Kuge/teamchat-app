@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChannelController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -20,8 +21,14 @@ Route::middleware('guest')->group(function () {
     }
 });
 
-// ログイン済みの人だけが、一覧表示とログアウトを利用できます。
+// ログイン済みの人だけが、チャンネルとログアウトを利用できます。
 Route::middleware('auth')->group(function () {
-    Route::view('/channels', 'channels.index')->name('channels.index');
+    Route::get('/channels', [ChannelController::class, 'index'])->name('channels.index');
+    Route::get('/channels/create', [ChannelController::class, 'create'])->name('channels.create');
+    Route::post('/channels', [ChannelController::class, 'store'])->name('channels.store');
+    Route::get('/channels/{channel}', [ChannelController::class, 'show'])->whereNumber('channel')->name('channels.show');
+    Route::get('/channels/{channel}/edit', [ChannelController::class, 'edit'])->whereNumber('channel')->name('channels.edit');
+    Route::patch('/channels/{channel}', [ChannelController::class, 'update'])->whereNumber('channel')->name('channels.update');
+    Route::delete('/channels/{channel}', [ChannelController::class, 'destroy'])->whereNumber('channel')->name('channels.destroy');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

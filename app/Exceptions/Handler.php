@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Models\Channel;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -23,10 +24,15 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $exception) {
-            Log::error('Application operation failed', [
+            $context = [
                 'exception_class' => $exception::class,
                 'route' => request()->route()?->getName(),
-            ]);
+            ];
+            $channel = request()->route('channel');
+            if ($channel instanceof Channel) {
+                $context['channel_id'] = $channel->id;
+            }
+            Log::error('Application operation failed', $context);
 
             // 秘密情報を含み得る標準ログへの出力を、ここで止めます。
             return false;
@@ -52,9 +58,28 @@ class Handler extends ExceptionHandler
         });
     }
 
-    // 入力エラー時は元のフォームへ戻し、名前とメールだけを再表示します。
+    // 入力エラー時は操作ごとのフォームへ戻し、許可した入力だけを再表示します。
     protected function invalid($request, ValidationException $exception)
     {
+        if ($request->routeIs('channels.store', 'channels.update', 'channels.destroy')) {
+            $route = $request->route()->getName();
+            $channel = $request->route('channel');
+            $parameters = $channel ? ['channel' => $channel->id] : [];
+            if ($route === 'channels.destroy') {
+                $parameters['confirm_delete'] = 1;
+            }
+            $target = $route === 'channels.store' ? 'channels.create' : 'channels.edit';
+
+            return redirect()->route($target, $parameters, 303)
+                ->withErrors($exception->errors())
+                ->with('channel_form', $route.($channel ? ':'.$channel->id : ''))
+                // 空入力のNULLは残し、編集前の値が再表示されるのを防ぎます。
+                ->withInput(array_filter(
+                    $request->only('name', 'description', 'is_private', 'confirmation_name'),
+                    fn ($value) => is_string($value) || $value === null,
+                ));
+        }
+
         if (! $request->routeIs('login.store', 'register.store')) {
             return parent::invalid($request, $exception);
         }

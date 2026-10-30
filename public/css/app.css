@@ -350,3 +350,20 @@ mark{background:#FBEBBD;color:inherit;border-radius:2px;padding:0 1px}
 .logout{display:inline-flex;align-items:center;min-height:36px;padding:0 8px;border:0;background:none;color:#A9B3BF;font:inherit;cursor:pointer}
 .logout:hover{color:#fff;text-decoration:underline}
 .logout:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+
+/* チャンネルのフォームと、原文の空白を保持する名前表示 */
+.channel-form{max-width:680px}
+.channel-form__title{margin-bottom:var(--sp-6)}
+.channel-form__actions{justify-content:flex-end;margin-top:var(--sp-6)}
+.channel-intro{margin-top:var(--sp-1)}
+.channel-visibility{padding:0;border:0;min-width:0}
+.channel-visibility legend{margin-bottom:var(--sp-2)}
+.channel-radio-description{display:block}
+.radio:has(input:checked){border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
+.channel-visibility.is-error .radio{border-color:var(--danger);background:var(--danger-soft)}
+.field.is-error .textarea:focus{box-shadow:0 0 0 3px rgba(179,38,30,.2)}
+.channel-edit-card{margin-bottom:var(--sp-8)}
+.channel-delete-title{margin-bottom:var(--sp-3)}
+.channel-delete-confirmation{margin-top:var(--sp-4);border-color:var(--danger-line)}
+.channel-delete-explanation{margin:var(--sp-2) 0 var(--sp-4)}
+.channel-text{white-space:pre-wrap;overflow-wrap:anywhere}

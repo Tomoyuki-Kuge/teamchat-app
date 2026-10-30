@@ -15,8 +15,11 @@
                 </form>
             </div>
         </header>
-        <main class="main main--scroll">
-            @yield('content')
-        </main>
+        <div class="app__body">
+            @include('channels.sidebar')
+            <main class="@yield('mainClass', 'main main--scroll')">
+                @yield('content')
+            </main>
+        </div>
     </div>
 @endsection

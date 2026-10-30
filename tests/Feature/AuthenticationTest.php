@@ -83,8 +83,8 @@ class AuthenticationTest extends TestCase
         $this->assertArrayNotHasKey('password_hash', $user->toArray());
         $this->get('/channels')->assertOk()->assertSee('登録 社員')->assertSee('ログアウト')
             ->assertSee('チームチャットアプリ')->assertSee('チャンネル一覧')
-            ->assertDontSee('<nav', false)->assertDontSee('チャンネル一覧を見る')
-            ->assertDontSee('メッセージを検索')->assertDontSee('公開チャンネルは');
+            ->assertSee('<nav', false)->assertSee('チャンネル一覧を見る')
+            ->assertDontSee('メッセージを検索')->assertSee('公開チャンネルは');
     }
 
     #[DataProvider('invalidRegistrationInputs')]
