@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Channels\SaveChannel;
 use App\Http\Requests\ChannelRequest;
 use App\Models\Channel;
+use App\Support\Messages\ConversationPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -32,11 +33,9 @@ class ChannelController extends Controller
         return redirect()->route('channels.show', $channel, 303);
     }
 
-    public function show(Channel $channel): View
+    public function show(Request $request, Channel $channel, ConversationPage $page): Response
     {
-        $this->authorize('view', $channel);
-
-        return view('channels.show', compact('channel'));
+        return $page->render($request, $channel);
     }
 
     public function edit(Request $request, Channel $channel): Response
