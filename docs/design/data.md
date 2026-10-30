@@ -229,3 +229,13 @@ Q-01〜Q-38の業務上の確認は解消済み。[確認事項](questions.md)�
 - 認証基盤はFortify、webガード、ファイルセッションを使用する。基盤テーブルは追加せず、既存usersの基盤列は保持する。
 - テストは`.env.example`を読み込み、[phpunit.xml](../../phpunit.xml)のserver設定でテスト専用キー・DB・セッションを固定する。
 - メールのRFC検証の前に内部CR・LFを拒否する。[既知の検証上の注意点](https://github.com/laravel/framework/security/advisories/GHSA-5vg9-5847-vvmq)への対応として追加する。
+
+## チャンネルの実装設計（Issue #2）
+
+- `channels`・`channel_user`・`messages`は新規マイグレーションで作成する。IDはBIGINT UNSIGNEDの自動採番、所属は2つの外部キーの複合主キーとする。外部キーは物理削除をRESTRICTし、チャンネル削除では子・所属を消去しない。
+- 名前はVARCHAR(50)、説明はNULL可のVARCHAR(200)、公開範囲はBOOLEAN。`name`と、未削除ならname・削除済みならNULLとなる仮想生成列`active_name`に`utf8mb4_0900_bin`を指定し、`active_name`全体へ一意インデックスを設ける。事前検証も同じ照合順序のnameを比較する。生成列は内部制約用で、画面・APIへの出力や入力対象にしない。
+- 生成列への一意制約は[MySQL 8.4の生成列インデックス](https://dev.mysql.com/doc/refman/8.4/en/create-table-secondary-indexes.html)、末尾空白の区別は[NO PADの比較](https://dev.mysql.com/doc/refman/8.4/en/charset-binary-collations.html)、削除後の再利用は[一意制約での複数NULLの許容](https://dev.mysql.com/doc/refman/8.4/en/create-index.html)を根拠とする。
+- 日時はUTCのDATETIMEで保存し、モデルの表示用アクセサで元の値を変更せずJSTへ変換する。Bladeで`Y/m/d H:i`に整形する。汎用の`updated_at`は追加せず、作成・編集・個別削除の設計済みの日時列を使う。
+- `messages.body`はVARCHAR(1000)、versionは初期値1の正の整数とし、親IDはNULL可の自己参照外部キー。今回の最小モデルは保存値のキャスト・関連付け・表示用日時のみを扱う。同一チャンネルの通常投稿への返信制約は、後続の投稿処理で検証する。
+- 今回は削除確認の実件数・削除時の会話保持を検証するためmessagesのテーブルと最小モデルを先行追加する（ユーザー決定）。会話表示・投稿・会話Seederは後続Issueで実装する。テストでは個別削除済みを含む投稿・返信を用意する。
+- 固定チャンネルSeederは既存のAuthUserSeederの後に実行する。未削除の同名チャンネルがあれば設定や所属を上書きせず、再実行で重複させない。公開は作成者だけ、採用プロジェクトは佐藤・鈴木を初期所属とする。
