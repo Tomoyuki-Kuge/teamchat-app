@@ -1,0 +1,4 @@
+interface:
+  display_name: "Issueの実装準備"
+  short_description: "mainの最新化と作業ブランチの準備後、設計を調べて計画と承認確認を行う"
+  default_prompt: "$start-prep を使って、最初にmainを最新化して対象Issueの作業ブランチを準備し、設計と現状を調べ、規模に応じてPlanモードで計画を立てるか変更概要を示し、承認を得てから着手してください。"
