@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Models\Channel;
+use App\Models\Message;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -31,6 +32,10 @@ class Handler extends ExceptionHandler
             $channel = request()->route('channel');
             if ($channel instanceof Channel) {
                 $context['channel_id'] = $channel->id;
+            }
+            $message = request()->route('message');
+            if ($message instanceof Message || (is_string($message) && ctype_digit($message))) {
+                $context['message_id'] = $message instanceof Message ? $message->id : (int) $message;
             }
             Log::error('Application operation failed', $context);
 

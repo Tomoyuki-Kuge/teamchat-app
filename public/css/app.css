@@ -367,3 +367,25 @@ mark{background:#FBEBBD;color:inherit;border-radius:2px;padding:0 1px}
 .channel-delete-confirmation{margin-top:var(--sp-4);border-color:var(--danger-line)}
 .channel-delete-explanation{margin:var(--sp-2) 0 var(--sp-4)}
 .channel-text{white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* 会話と、JavaScriptを使わない編集・競合表示 */
+.msg__body{white-space:pre-wrap;overflow-wrap:anywhere}
+.message-content{min-width:0}
+.msg__acts{display:none}
+.msg:hover .msg__acts,.msg:focus-within .msg__acts{display:flex}
+.icon-btn:disabled{color:var(--text-disabled);cursor:not-allowed;background:var(--n-100)}
+a.icon-btn:hover{text-decoration:none}
+.thread-link.is-disabled{color:var(--text-muted);cursor:not-allowed}
+.message-editor{margin-top:var(--sp-2)}
+.message-editor .field{margin-bottom:var(--sp-2)}
+.message-conflict{padding:var(--sp-3);margin-bottom:var(--sp-3);border:1px solid var(--danger-line);background:var(--danger-soft);border-radius:var(--r-md)}
+.message-conflict .label{margin-top:var(--sp-2)}
+.message-history{text-align:center;margin:var(--sp-2) var(--sp-6)}
+.message-empty{margin:var(--sp-4) var(--sp-6)}
+.message-range-error{margin:var(--sp-2) var(--sp-6)}
+.message-preview{padding:var(--sp-4);margin-bottom:var(--sp-4);background:var(--surface);border:var(--border);border-radius:var(--r-md)}
+.composer__box.is-error{border-color:var(--danger);background:var(--danger-soft)}
+.composer__box.is-error:focus-within{box-shadow:0 0 0 3px rgba(179,38,30,.2)}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.main{min-height:0}
+.ch-head,.composer{flex-shrink:0}
