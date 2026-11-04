@@ -21,8 +21,8 @@ enabled = true
 "api.github.com" = "allow"
 
 [permissions.workspace-no-env.network.unix_sockets]
-"/Users/tomoyuki/.docker/run/docker.sock" = "allow"
-"/private/tmp/com.apple.launchd.YtF4AGhHjS/Listeners" = "allow"
+"/Users/dev/.docker/run/docker.sock" = "allow"
+"/var/run/com.apple.launchd.PhyEhOEt5D/Listeners" = "allow"
 
 [[hooks.PostToolUse]]
 matcher = "apply_patch|Edit|Write"
