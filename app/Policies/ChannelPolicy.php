@@ -25,6 +25,28 @@ class ChannelPolicy
         return $channel->creator_id === $user->id ? Response::allow() : Response::deny('この操作はできません');
     }
 
+    public function manageMembers(User $user, Channel $channel): Response
+    {
+        $visibility = $this->view($user, $channel);
+        if ($visibility->denied()) {
+            return $visibility;
+        }
+
+        return $channel->is_private && $channel->creator_id === $user->id
+            ? Response::allow() : Response::deny('この操作はできません');
+    }
+
+    public function removeMember(User $user, Channel $channel, int $userId): Response
+    {
+        $management = $this->manageMembers($user, $channel);
+        if ($management->denied()) {
+            return $management;
+        }
+
+        return $channel->creator_id === $userId
+            ? Response::deny('作成者は外せません') : Response::allow();
+    }
+
     public function delete(User $user, Channel $channel): Response
     {
         return $this->update($user, $channel);

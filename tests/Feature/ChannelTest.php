@@ -468,7 +468,7 @@ class ChannelTest extends TestCase
         $owner = User::factory()->create();
         $channel = $this->channel($owner, ['name' => '<b>部屋</b>', 'description' => '<script>秘密</script>', 'is_private' => '1']);
         $this->actingAs($owner)->get('/channels')->assertOk()->assertSee('&lt;b&gt;部屋&lt;/b&gt;', false)
-            ->assertSee('&lt;script&gt;秘密&lt;/script&gt;', false)->assertSee('disabled>メンバー', false)->assertDontSee('<script', false);
+            ->assertSee('&lt;script&gt;秘密&lt;/script&gt;', false)->assertSee(route('members.index', $channel), false)->assertDontSee('<script', false);
         $this->get("/channels/{$channel->id}")->assertOk()->assertSee('aria-current="page"', false);
         $this->get('/channels/create')->assertOk()->assertSee('50文字まで')->assertSee('200文字まで')->assertSee('name="_token"', false);
         $this->get("/channels/{$channel->id}/edit")->assertOk()->assertSee('公開範囲はあとから変更できません')->assertDontSee('name="is_private"', false);
