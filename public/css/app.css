@@ -389,3 +389,8 @@ a.icon-btn:hover{text-decoration:none}
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .main{min-height:0}
 .ch-head,.composer{flex-shrink:0}
+
+.member-add { margin-bottom: var(--sp-6); }
+.member-heading { margin-bottom: var(--sp-3); }
+.member-candidates { border: 0; padding: 0; margin: 16px 0; min-width: 0; }
+.member-candidates.is-error { border: 1px solid var(--danger); background: var(--danger-soft); padding: 12px; border-radius: var(--r-md); }

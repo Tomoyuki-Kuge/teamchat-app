@@ -66,6 +66,15 @@ class Handler extends ExceptionHandler
     // 入力エラー時は操作ごとのフォームへ戻し、許可した入力だけを再表示します。
     protected function invalid($request, ValidationException $exception)
     {
+        if ($request->routeIs('members.store', 'members.destroy')) {
+            $q = $request->input('q');
+
+            return redirect()->route('members.index', ['channel' => $request->route('channel')->id, 'q' => is_string($q) ? $q : null], 303)
+                ->withErrors($exception->errors())
+                ->with('member_form', $request->route()->getName().':'.$request->route('channel')->id)
+                ->withInput(array_filter($request->only('user_id'), fn ($value) => is_string($value) || is_int($value)));
+        }
+
         if ($request->routeIs('channels.store', 'channels.update', 'channels.destroy')) {
             $route = $request->route()->getName();
             $channel = $request->route('channel');

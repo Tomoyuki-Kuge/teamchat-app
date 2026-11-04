@@ -28,7 +28,7 @@
                         </div>
                         <div class="row__acts">
                             @if($item->creator_id === auth()->id())
-                                @if($item->is_private)<button class="btn btn--sm" type="button" disabled>メンバー</button>@endif
+                                @if($item->is_private)<a class="btn btn--sm" href="{{ route('members.index', $item) }}">メンバー</a>@endif
                                 <a class="btn btn--sm" href="{{ route('channels.edit', $item) }}">編集</a>
                             @endif
                             <a class="btn btn--sm" href="{{ route('channels.show', $item) }}">開く</a>

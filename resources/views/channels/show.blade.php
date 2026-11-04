@@ -10,6 +10,7 @@
         </div>
         @if($channel->creator_id === auth()->id())
             <div class="ch-head__acts">
+                @if($channel->is_private)<a class="btn btn--sm" href="{{ route('members.index', $channel) }}">メンバー</a>@endif
                 <a class="btn btn--sm" href="{{ route('channels.edit', $channel) }}">編集</a>
                 <a class="btn btn--sm btn--danger" href="{{ route('channels.edit', ['channel' => $channel, 'confirm_delete' => 1]) }}">削除</a>
             </div>

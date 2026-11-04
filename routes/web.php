@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChannelController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -35,5 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/channels/{channel}/messages/{message}/delete-confirmation', [MessageController::class, 'deleteConfirmation'])->whereNumber(['channel', 'message'])->name('messages.delete-confirmation');
     Route::patch('/channels/{channel}/messages/{message}', [MessageController::class, 'update'])->whereNumber(['channel', 'message'])->name('messages.update');
     Route::delete('/channels/{channel}/messages/{message}', [MessageController::class, 'destroy'])->whereNumber(['channel', 'message'])->name('messages.destroy');
+    Route::get('/channels/{channel}/members', [MemberController::class, 'index'])->whereNumber('channel')->name('members.index');
+    Route::post('/channels/{channel}/members', [MemberController::class, 'store'])->whereNumber('channel')->name('members.store');
+    Route::delete('/channels/{channel}/members/{user}', [MemberController::class, 'destroy'])->whereNumber(['channel', 'user'])->name('members.destroy');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
