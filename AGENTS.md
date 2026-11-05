@@ -18,31 +18,13 @@
 
 実装と設計書が食い違ったら、**コードではなく `docs/design/` を先に直す**。設計書は提出物の中心で、最後まで実物と一致させる。
 
-## プロジェクト構成
+## 作業時の共通ルール
 
-Laravel標準のMVC構成に従って実装してください。
-
-- `docs/spec.md`、`docs/design/`: 要件、構成、受け入れ条件。
-- `mockup/index.html`: 画面見本の一覧。ブラウザで直接開けます。
-
-## 環境構築・開発・テストのコマンド
-
-初回は`composer install`でPHPの依存パッケージをインストールし、`.env.example`を`.env`へコピーしてください。Sailを使う前にDockerを起動します。
-
-- `./vendor/bin/sail up -d`: アプリケーションとMySQLのコンテナを起動します。
-- `./vendor/bin/sail artisan key:generate`: 初期設定時にアプリケーションキーを生成します。
-- `./vendor/bin/sail artisan migrate`: 未適用のマイグレーションを実行します。
-- `./vendor/bin/sail npm install`: フロントエンドの依存パッケージをインストールします。
-- `./vendor/bin/sail npm run dev`: 開発用のViteサーバーを起動します。
-- `./vendor/bin/sail npm run build`: 本番用のアセットをビルドします。
-- `./vendor/bin/sail artisan test`: PHPUnitのテストを実行します。
-- `./vendor/bin/sail pint`: PHPコードを整形します。
-
-## コーディング規約・命名規則
-
-`.editorconfig`に従い、UTF-8、LF改行、スペース4個のインデント、ファイル末尾の改行を使用してください。YAMLのインデントはスペース2個です。PHPはLaravel Pintで整形します。名前空間とディレクトリをPSR-4に従って対応させてください。クラス名は`PascalCase`、メソッド名は`camelCase`、DBカラム名は`snake_case`にします。マイグレーションは`create_channels_table`のように目的が分かる名前にしてください。
-
-承認済みの画面設計ではJavaScriptを使わず、リンクとフォーム送信で操作します。動作を変更する前に関連する設計書を更新し、実装との整合性を保ってください。図はMarkdown内にMermaidで記述します。
+- Laravelコマンドは`./vendor/bin/sail artisan`経由で実行してください。初回セットアップは`README.md`を参照してください。
+- 書式は`.editorconfig`に従い、変更したPHPは`./vendor/bin/sail pint`で整形してください。
+- 画面操作はJavaScriptを使わず、リンクとフォーム送信で実装します。具体的な契約は`docs/design/screens.md`「操作・表示の共通方針」を参照してください。
+- 設計書の書き方は`docs/design/README.md`を参照してください。
+- `.env`は閲覧・変更しないでください。設定値は`.env.example`で確認し、認証情報をコミットしないでください。
 
 ## 守ってほしい書き方
 
@@ -60,34 +42,32 @@ Laravel標準のMVC構成に従って実装してください。
 | 公開APIの出力・ページ分割・エラー | [permissions-api.md「公開APIの共通契約」以降](docs/design/permissions-api.md#公開apiの共通契約) |
 | 障害応答・ログ・保存後の失敗 | [behavior.md「例外方針」](docs/design/behavior.md#例外方針)、[behavior.md「更新の整合性と同時操作」](docs/design/behavior.md#更新の整合性と同時操作) |
 
-## 変更時の注意
+### 変更対象ごとの実装ルール
 
-- Laravelコマンドは`./vendor/bin/sail artisan`経由で実行してください。
-- 機能を変更したら、関連する機能テストも追加または更新し、`./vendor/bin/sail artisan test`で確認してください。実行できない場合は理由と未確認の範囲を共有してください。
-- 変更したPHPは`./vendor/bin/sail pint`で整形してください。
-- 実行済みのマイグレーションは編集・削除せず、スキーマ変更には新しいマイグレーションを追加してください。
-- `.env`の中身は読まないでください。設定値を確認したいときは`.env.example`を見てください。`.env`を変更せず、認証情報をコミットしないでください。
+実装前に、変更対象に対応する以下のルールも読んでください。複数に該当する場合はすべて確認します。対象パターンはリポジトリルートからの相対パスで、Markdownの自動読み込みを指定する設定ではありません。この表を使って必要なファイルを明示的に読みます。
 
-## テスト方針
+| 変更対象 | 読むルール |
+| --- | --- |
+| `app/**/*.php`、`routes/**/*.php` | [Laravelの責務と構成](.codex/rules/laravel-architecture.md) |
+| `app/Http/**/*.php`、`routes/**/*.php`、`app/Support/Messages/**/*.php`、`app/Exceptions/**/*.php` | [HTTP・入力・フォーム](.codex/rules/http.md) |
+| `app/Policies/**/*.php`、`app/Http/**/*.php`、`app/Actions/**/*.php`、`app/Support/Messages/**/*.php`、`app/Providers/AuthServiceProvider.php` | [認可と対象確認](.codex/rules/authorization.md) |
+| `app/Models/**/*.php`、`app/Actions/**/*.php`、`app/Support/Messages/**/*.php`、`database/**/*.php` | [保存と取得](.codex/rules/persistence.md) |
+| `app/Providers/**/*.php`、`app/Http/Middleware/**/*.php`、`app/Http/Responses/**/*.php`、`app/Http/Kernel.php`、`app/Exceptions/**/*.php`、`app/Actions/Fortify/**/*.php`、`app/Support/Auth*.php`、`app/Http/Requests/LoginRequest.php`、`app/Models/User.php`、`config/fortify.php`、`routes/**/*.php` | [フレームワークとの連携](.codex/rules/framework-integration.md) |
+| `tests/**/*.php`、および機能の振る舞いを変更する作業全般 | [テスト](.codex/rules/testing.md) |
 
-PHPUnit 10を使用します。ファイル名は`*Test.php`、メソッド名は検証内容が分かる`test_*`形式にしてください。HTTP、認可、DBを扱うシナリオは機能テスト、独立したロジックは単体テストに配置します。`docs/design/acceptance.md`を基に、入力チェックや権限不足のケースも検証してください。DBを扱うテストには、設定済みの`testing`データベースを使用します。カバレッジの数値目標は設定されていません。チャンネル関連のテストを絞る例は`./vendor/bin/sail artisan test --filter=ChannelTest`です。
+各ルールは実装時の判断基準を扱います。文字数・件数・文言・判定順序などの具体的な契約は、上の表から関連する設計書を確認してください。ルールと設計が食い違った場合は独断で実装を変えず、不一致を整理してください。
+
+`.codex/rules/*.md`はこの案内から読む実装ルールです。`sail-tests.rules`などの`.rules`ファイルはコマンド実行の許可を扱います。
 
 ## 実装担当サブエージェント
 
-承認済み計画に基づく機能実装と自動テストは、[implementer](.codex/agents/implementer.toml)を1人起動して委任してください。実装とテストは同じ担当にまとめます。局所的な誤字・文書・設定の修正は、親が直接行って構いません。
-
-- 親はIssue調査、計画と承認の確認、実装前の設計更新、子への引き継ぎ、差分レビュー、画面UAT、Git・PR操作、ユーザーへの報告を担当します。子の完了報告だけで受け入れ条件を達成扱いにせず、差分と検証根拠を確認してください。
-- 子は承認済み範囲の実装、機能テストの追加・更新、Sailでの検証、Pint、結果報告を担当します。仕様や範囲の変更が必要なら親へ返し、子から再委任しません。
-- 親は会話履歴全体を渡さず、承認済み計画・確定判断・関連資料の参照先・完了条件をまとめて渡してください。起動APIが対応している場合は履歴を継承しない設定（`fork_turns: "none"`）を使います。
-- 同じ作業ツリーで実装する子は1人にし、子の作業中に親が同じファイルを編集したり、同じ`testing` DBでテストを並行実行したりしないでください。
-- カスタムエージェントを指定できない環境では、定義を読んで同じ指示を通常の子へ渡します。サブエージェント自体が使えなければ制約を伝え、親が承認済み範囲を実装します。
-- フックと明示実行の検証結果は、最終差分を確認できたかで判断します。同じ検証を理由なく繰り返さず、変更・失敗・未確認事項がある場合に必要な再検証を行ってください。
+承認済み計画に基づく機能実装と自動テストは、[implementer](.codex/agents/implementer.toml)を1人起動して委任してください。局所的な誤字・文書・設定の修正は、親が直接行って構いません。親の分担・引き継ぎ・差分レビューの手順は[start-prep「承認後、実装担当へ引き継ぐ」](.codex/skills/start-prep/SKILL.md#7-承認後実装担当へ引き継ぐ)に従ってください。
 
 ## ブランチとプルリクエストの方針
 
 PRの作成・更新の手順は[create-pr Skill](.codex/skills/create-pr/SKILL.md)を参照してください。命名規約とPR本文の型は、この節を正本とします。
 
-直近の履歴では、`docs: add acceptance criteria and finalize review decisions`のように、接頭辞付きの簡潔な命令形のコミット件名を使用しています。変更内容に合う接頭辞を付け、この形式に従ってください。`.env`や認証情報はコミットしないでください。
+直近の履歴では、`docs: add acceptance criteria and finalize review decisions`のように、接頭辞付きの簡潔な命令形のコミット件名を使用しています。変更内容に合う接頭辞を付け、この形式に従ってください。
 
 イシュー1件につきブランチを1本作り、プルリクエスト1本で受け取ります。イシューに紐づかない修正も、変更の目的ごとにブランチとプルリクエストを分けてください。ブランチ名は次の形式にします。
 
@@ -98,7 +78,7 @@ PRの作成・更新の手順は[create-pr Skill](.codex/skills/create-pr/SKILL.
 
 種別は機能追加なら`feat`、不具合修正なら`fix`、文書だけなら`docs`、開発環境や`.claude/`・`.codex/`の物差しの整備なら`chore`を使います。概要は英小文字・数字・ハイフンで、変更内容が分かる短い名前にしてください。
 
-PR本文には動作の変更内容、検証コマンドとテスト結果、受け入れ条件それぞれの判定を記載します。イシューに紐づく場合は最後に`Closes #<イシュー番号>`を入れてください。紐づかない場合はIssue欄を「該当なし」とし、`Closes`の行は省略します。画面を変更した場合はスクリーンショットを添付し、関連する設計書の更新も含めてください。
+イシューに紐づく場合は最後に`Closes #<イシュー番号>`を入れてください。紐づかない場合はIssue欄を「該当なし」とし、`Closes`の行は省略します。画面を変更した場合はスクリーンショットを添付してください。
 
 マージ後は`main`へ切り替えて`origin/main`と同期し、マージ済みの作業ブランチをリモート・ローカルの両方から削除してください。
 
