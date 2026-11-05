@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/channels/{channel}/edit', [ChannelController::class, 'edit'])->whereNumber('channel')->name('channels.edit');
     Route::patch('/channels/{channel}', [ChannelController::class, 'update'])->whereNumber('channel')->name('channels.update');
     Route::delete('/channels/{channel}', [ChannelController::class, 'destroy'])->whereNumber('channel')->name('channels.destroy');
+    Route::get('/channels/{channel}/threads/{message}', [ThreadController::class, 'show'])->whereNumber(['channel', 'message'])->name('threads.show');
+    Route::post('/channels/{channel}/threads/{message}/replies', [ThreadController::class, 'store'])->whereNumber(['channel', 'message'])->name('replies.store');
     Route::post('/channels/{channel}/messages', [MessageController::class, 'store'])->whereNumber('channel')->name('messages.store');
     Route::get('/channels/{channel}/messages/{message}/delete-confirmation', [MessageController::class, 'deleteConfirmation'])->whereNumber(['channel', 'message'])->name('messages.delete-confirmation');
     Route::patch('/channels/{channel}/messages/{message}', [MessageController::class, 'update'])->whereNumber(['channel', 'message'])->name('messages.update');

@@ -11,11 +11,13 @@ use Illuminate\Support\Facades\Gate;
 
 class SaveMessage
 {
-    public function create(User $user, Channel $channel, string $body): Message
+    public function create(User $user, Channel $channel, string $body, ?Message $parent = null): Message
     {
-        return DB::transaction(function () use ($user, $channel, $body) {
+        return DB::transaction(function () use ($user, $channel, $body, $parent) {
             $current = $this->lockChannel($user, $channel);
+            $parent = $parent ? $current->messages()->whereNull('parent_message_id')->whereKey($parent->id)->lockForUpdate()->firstOrFail() : null;
             $message = new Message(['body' => $body]);
+            $message->parent_message_id = $parent?->id;
             $message->channel()->associate($current);
             $message->author()->associate($user);
             $message->version = 1;

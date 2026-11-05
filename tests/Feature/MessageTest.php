@@ -455,13 +455,13 @@ class MessageTest extends TestCase
     public function test_seeding_creates_distributed_conversations_once_and_does_not_overwrite_edits_or_memberships(): void
     {
         $this->seed(DatabaseSeeder::class);
-        $this->assertDatabaseCount('messages', 34);
+        $this->assertDatabaseCount('messages', 50);
         foreach (Channel::all() as $channel) {
-            $this->assertSame($channel->is_private ? 4 : 10, $channel->messages()->count());
+            $this->assertSame($channel->is_private ? 4 : 10, $channel->messages()->whereNull('parent_message_id')->count());
             $this->assertGreaterThanOrEqual(2, $channel->messages()->distinct()->count('user_id'));
             $this->assertGreaterThanOrEqual(2, $channel->messages()->distinct()->count('created_at'));
         }
-        $this->assertSame(0, Message::whereNotNull('parent_message_id')->count());
+        $this->assertSame(16, Message::whereNotNull('parent_message_id')->count());
         $this->assertSame(0, Message::where('version', '!=', 1)->count());
         $this->assertGreaterThanOrEqual(1, Message::whereNotNull('edited_at')->count());
         $this->assertGreaterThanOrEqual(1, Message::whereNotNull('deleted_at')->count());

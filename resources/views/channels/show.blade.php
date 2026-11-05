@@ -2,6 +2,7 @@
 @section('title', $channel->name)
 @section('mainClass', 'main')
 @section('content')
+    <div class="conversation-layout"><section class="conversation-main">
     <div class="ch-head">
         <div class="ch-head__main">
             <h1 class="ch-head__name"><x-channel-symbol :private="$channel->is_private" /><span class="channel-text">{{ $channel->name }}</span></h1>
@@ -45,4 +46,9 @@
         </div>
         @if($composer['feedback']->has('body'))<p id="message-error" class="err" role="alert">{{ $composer['feedback']->first('body') }}</p>@endif
     </form>
+    </section>
+    @if($range->thread)
+        @include('messages.thread')
+    @endif
+    </div>
 @endsection
