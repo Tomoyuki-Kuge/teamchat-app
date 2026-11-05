@@ -31,6 +31,17 @@ class MessageSeeder extends Seeder
                         'edited_at' => $index === 1 ? $created->addMinutes(5) : null,
                         'deleted_at' => $index === 2 ? $created->addMinutes(8) : null,
                     ])->save();
+                    if (in_array($index, [0, 2], true)) {
+                        for ($replyIndex = 0; $replyIndex < ($index === 0 ? 3 : 1); $replyIndex++) {
+                            $reply = new Message(['body' => ['確認しました。ありがとうございます。', 'こちらでも対応を進めます。', '完了したら改めて共有します。'][$replyIndex]]);
+                            $reply->forceFill([
+                                'channel_id' => $channel->id, 'user_id' => $authors[$emails[($replyIndex + 1) % count($emails)]]->id,
+                                'parent_message_id' => $message->id, 'version' => 1,
+                                'created_at' => $created->addMinutes(10 + $replyIndex),
+                                'edited_at' => null, 'deleted_at' => $replyIndex === 1 ? $created->addMinutes(20) : null,
+                            ])->save();
+                        }
+                    }
                 }
             });
         }

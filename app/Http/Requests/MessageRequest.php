@@ -22,17 +22,22 @@ class MessageRequest extends FormRequest
     {
         $channel = $this->route('channel');
         Gate::authorize('view', $channel);
-        if (! $this->routeIs('messages.store')) {
-            $this->target = $channel->messages()->whereNull('parent_message_id')->findOrFail($this->route('message'));
+        if (! $this->routeIs('messages.store', 'replies.store')) {
+            $this->target = $channel->messages()->findOrFail($this->route('message'));
+        }
+        $input = $this->only('messages_until', 'messages_pages', 'replies_until', 'replies_pages', 'origin', 'thread');
+        $thread = $this->routeIs('replies.store') ? $channel->messages()->whereNull('parent_message_id')->findOrFail($this->route('message')) : null;
+        $targets = ConversationRange::resolveTargets($channel, $input, $thread, $this->target);
+        if ($this->target) {
             Gate::authorize($this->routeIs('messages.destroy') ? 'delete' : 'update', $this->target);
             abort_if($this->target->deleted_at !== null, 409, 'このメッセージは削除されています');
         }
         try {
-            $this->range = ConversationRange::from($channel, $this->only('messages_until', 'messages_pages', 'origin'));
+            $this->range = ConversationRange::from($channel, $input, $thread, $this->target, resolved: $targets);
         } catch (ValidationException $exception) {
             $this->reject($exception->errors());
         }
-        if ($this->routeIs('messages.update') && ! $this->range->messages->contains('id', $this->target->id)) {
+        if ($this->routeIs('messages.update') && ! $this->range->contains($this->target)) {
             $this->reject(['edit' => ['表示条件が正しくありません']]);
         }
 
@@ -73,11 +78,11 @@ class MessageRequest extends FormRequest
 
     private function reject(array $errors): never
     {
-        $edit = $this->routeIs('messages.update') && $this->range?->messages->contains('id', $this->target->id);
+        $edit = $this->routeIs('messages.update') && ($this->range?->contains($this->target) ?? false);
         $url = $this->range?->url($edit ? ['edit' => $this->target->id] : [], $edit ? $this->target->id : null)
             ?? route('channels.show', $this->route('channel'));
         throw new HttpResponseException(redirect()->to($url, 303)->withErrors($errors)
-            ->with('message_form', $this->route()->getName().':'.$this->route('channel')->id.':'.($this->target?->id ?? 'new'))
+            ->with('message_form', $this->route()->getName().':'.$this->route('channel')->id.':'.($this->target?->id ?? ($this->routeIs('replies.store') ? $this->route('message') : 'new')))
             ->withInput([
                 'body' => is_string($this->input('body')) ? $this->input('body') : null,
                 'expected_version' => is_string($this->input('expected_version')) || is_int($this->input('expected_version')) ? $this->input('expected_version') : null,

@@ -20,8 +20,7 @@ class ConversationPage
             return DB::transaction(function () use ($request, $channel, $conflict) {
                 $currentChannel = Channel::whereKey($channel->id)->lockForUpdate()->firstOrFail();
                 Gate::authorize('view', $currentChannel);
-                $current = $currentChannel->messages()->whereNull('parent_message_id')
-                    ->whereKey($conflict->id)->lockForUpdate()->firstOrFail();
+                $current = $currentChannel->messages()->whereKey($conflict->id)->lockForUpdate()->firstOrFail();
                 $current->setRelation('channel', $currentChannel);
                 Gate::authorize('update', $current);
                 abort_if($current->deleted_at !== null, 409, 'このメッセージは削除されています');
@@ -37,35 +36,38 @@ class ConversationPage
     private function renderPage(Request $request, Channel $channel, ?Message $conflict = null): Response
     {
         Gate::authorize('view', $channel);
-        $editMessage = null;
         $invalid = false;
+        $thread = $request->routeIs('threads.show', 'replies.store') ? $channel->messages()->whereNull('parent_message_id')->findOrFail($request->route('message')) : null;
+        $input = $request->isMethod('GET') ? $request->query() : $request->only('messages_until', 'messages_pages', 'replies_until', 'replies_pages', 'origin', 'thread');
+        $targets = ConversationRange::resolveTargets($channel, $input, $thread, $conflict);
+        $editMessage = $conflict ?? ($targets['edit'] ?? null);
+        if ($editMessage) {
+            Gate::authorize('update', $editMessage);
+            abort_if($editMessage->deleted_at !== null, 409, 'このメッセージは削除されています');
+        }
         try {
-            $range = ConversationRange::from($channel, $request->isMethod('GET') ? $request->query() : $request->only('messages_until', 'messages_pages', 'origin'));
-            if ($conflict || $request->query->has('edit')) {
-                $editMessage = $conflict ?? $channel->messages()->whereNull('parent_message_id')->findOrFail($request->query('edit'));
-                Gate::authorize('update', $editMessage);
-                abort_if($editMessage->deleted_at !== null, 409, 'このメッセージは削除されています');
-                if (! $range->messages->contains('id', $editMessage->id)) {
-                    throw ValidationException::withMessages(['edit' => '表示条件が正しくありません']);
-                }
+            $range = ConversationRange::from($channel, $input, $thread, $conflict, resolved: $targets);
+            if ($editMessage && ! $range->contains($editMessage)) {
+                throw ValidationException::withMessages(['edit' => '表示条件が正しくありません']);
             }
         } catch (ValidationException $exception) {
             $invalid = true;
-            $range = ConversationRange::from($channel, []);
+            $range = ConversationRange::from($channel, [], $thread);
             $editMessage = null;
         }
         $form = $request->session()->get('message_form', '');
         $feedback = $request->session()->get('errors')?->getBag('default') ?? new MessageBag;
-        $rangeError = (str_starts_with($form, 'messages.store:'.$channel->id.':') || str_starts_with($form, 'messages.update:'.$channel->id.':') || str_starts_with($form, 'messages.destroy:'.$channel->id.':'))
-            && $feedback->hasAny(['origin', 'messages_until', 'messages_pages', 'edit']);
+        $rangeError = (str_starts_with($form, 'replies.store:'.$channel->id.':') || str_starts_with($form, 'messages.store:'.$channel->id.':') || str_starts_with($form, 'messages.update:'.$channel->id.':') || str_starts_with($form, 'messages.destroy:'.$channel->id.':'))
+            && $feedback->hasAny(['origin', 'thread', 'messages_until', 'messages_pages', 'replies_until', 'replies_pages', 'edit']);
         $composer = $this->formState($request, 'messages.store:'.$channel->id.':new', ['body' => '']);
+        $replyComposer = $range->thread ? $this->formState($request, 'replies.store:'.$channel->id.':'.$range->thread->id, ['body' => '']) : null;
         $editor = $editMessage ? $this->formState($request, 'messages.update:'.$channel->id.':'.$editMessage->id,
             ['body' => $editMessage->body, 'expected_version' => $editMessage->version]) : null;
         if ($conflict) {
             $editor = ['values' => ['body' => $request->input('body'), 'expected_version' => $conflict->version], 'feedback' => new MessageBag];
         }
 
-        return response()->view('channels.show', compact('channel', 'range', 'editMessage', 'composer', 'editor', 'conflict', 'invalid', 'rangeError'), $invalid ? 422 : ($conflict ? 409 : 200));
+        return response()->view('channels.show', compact('channel', 'range', 'editMessage', 'composer', 'editor', 'conflict', 'invalid', 'rangeError', 'replyComposer'), $invalid ? 422 : ($conflict ? 409 : 200));
     }
 
     private function formState(Request $request, string $key, array $defaults): array

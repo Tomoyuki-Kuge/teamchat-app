@@ -394,3 +394,11 @@ a.icon-btn:hover{text-decoration:none}
 .member-heading { margin-bottom: var(--sp-3); }
 .member-candidates { border: 0; padding: 0; margin: 16px 0; min-width: 0; }
 .member-candidates.is-error { border: 1px solid var(--danger); background: var(--danger-soft); padding: 12px; border-radius: var(--r-md); }
+
+.conversation-layout { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+.conversation-main { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.thread-panel { flex: 0 0 var(--thread-w); width: var(--thread-w); }
+.thread-panel__head { display: flex; align-items: center; justify-content: space-between; padding: var(--sp-3) var(--sp-4); border-bottom: var(--border); }
+.thread-panel__head h2 { font-size: var(--fs-label); margin: 0; }
+.thread-panel__messages { flex: 1; overflow-y: auto; min-height: 0; padding: var(--sp-4) 0; }
+.thread-count, .thread-empty { padding: var(--sp-3) var(--sp-4); color: var(--text-muted); font-size: var(--fs-caption); }

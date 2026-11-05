@@ -36,11 +36,12 @@ class MessageController extends Controller
     public function deleteConfirmation(Request $request, Channel $channel, string $message): Response
     {
         $this->authorize('view', $channel);
-        $target = $channel->messages()->whereNull('parent_message_id')->with('author')->findOrFail($message);
+        $target = $channel->messages()->with('author')->findOrFail($message);
+        $targets = ConversationRange::resolveTargets($channel, $request->query(), null, $target);
         $this->authorize('delete', $target);
         abort_if($target->deleted_at !== null, 409, 'このメッセージは削除されています');
         try {
-            $range = ConversationRange::from($channel, $request->query());
+            $range = ConversationRange::from($channel, $request->query(), null, $target, resolved: $targets);
         } catch (ValidationException $exception) {
             return response()->view('messages.invalid-range', compact('channel'), 422);
         }
