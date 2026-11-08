@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+// 処理時間の計測に使う開始時刻を記録します。
 define('LARAVEL_START', microtime(true));
 
 /*
@@ -15,8 +16,10 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
+// Composerのクラス自動読み込みを有効にします。
 require __DIR__.'/vendor/autoload.php';
 
+// 起動設定を読み込み、Laravelのアプリ本体を生成します。
 $app = require_once __DIR__.'/bootstrap/app.php';
 
 /*
@@ -30,8 +33,10 @@ $app = require_once __DIR__.'/bootstrap/app.php';
 |
 */
 
+// コンソールコマンドを処理するKernelを取得します。
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
+// コマンドライン引数を処理して結果を出力し、終了ステータスを受け取ります。
 $status = $kernel->handle(
     $input = new Symfony\Component\Console\Input\ArgvInput,
     new Symfony\Component\Console\Output\ConsoleOutput
@@ -48,6 +53,8 @@ $status = $kernel->handle(
 |
 */
 
+// コマンド実行後にKernelの終了処理を実行します。
 $kernel->terminate($input, $status);
 
+// コマンドの終了ステータスを呼び出し元へ返して終了します。
 exit($status);

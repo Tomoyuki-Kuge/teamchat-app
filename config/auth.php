@@ -2,6 +2,7 @@
 
 use App\Models\User;
 
+// 認証方式と認証対象ユーザーの取得方法を定義します。
 return [
 
     /*
@@ -15,6 +16,7 @@ return [
     |
     */
 
+    // 標準で使う認証ガードとパスワードリセット設定を指定します。
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'users',
@@ -37,6 +39,7 @@ return [
     |
     */
 
+    // Web認証でセッションとユーザープロバイダーを使うよう設定します。
     'guards' => [
         'web' => [
             'driver' => 'session',
@@ -61,6 +64,7 @@ return [
     |
     */
 
+    // 認証対象のユーザーをUserモデルから取得するよう設定します。
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
@@ -92,6 +96,7 @@ return [
     |
     */
 
+    // パスワードリセット利用時のトークン保存先と有効期間を指定します。
     'passwords' => [
         'users' => [
             'provider' => 'users',
@@ -112,6 +117,7 @@ return [
     |
     */
 
+    // パスワード再確認を有効とみなす秒数を指定します。
     'password_timeout' => 10800,
 
 ];

@@ -5,6 +5,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 
+// ログの既定出力先とチャンネル別の出力方法を定義する。
 return [
 
     /*
@@ -18,6 +19,7 @@ return [
     |
     */
 
+    // ログ出力で既定として使うチャンネルを指定する。
     'default' => env('LOG_CHANNEL', 'stack'),
 
     /*
@@ -31,6 +33,7 @@ return [
     |
     */
 
+    // 非推奨機能の警告を出すチャンネルとトレースの有無を指定する。
     'deprecations' => [
         'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
         'trace' => false,
@@ -51,6 +54,7 @@ return [
     |
     */
 
+    // 出力先ごとのドライバー、保存先、ログレベルなどを定義する。
     'channels' => [
         'stack' => [
             'driver' => 'stack',

@@ -5,8 +5,14 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * 通常投稿と返信を保存するメッセージテーブルを定義する。
+ */
 return new class extends Migration
 {
+    /**
+     * 通常投稿・返信のテーブルと、版を正の整数に制限する制約を作成する。
+     */
     public function up(): void
     {
         Schema::create('messages', function (Blueprint $table) {
@@ -24,6 +30,9 @@ return new class extends Migration
         DB::statement('ALTER TABLE messages ADD CONSTRAINT messages_positive_version CHECK (version > 0)');
     }
 
+    /**
+     * メッセージテーブルを削除する。
+     */
     public function down(): void
     {
         Schema::dropIfExists('messages');

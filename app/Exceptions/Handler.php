@@ -12,6 +12,9 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
+/**
+ * 例外のログ出力・エラー応答・入力エラー時の画面遷移を扱う。
+ */
 class Handler extends ExceptionHandler
 {
     // 入力エラーで画面へ戻す際も、パスワードはセッションに残しません。

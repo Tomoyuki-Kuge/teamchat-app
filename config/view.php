@@ -1,5 +1,6 @@
 <?php
 
+// ビューの探索先とBladeのコンパイル結果の保存先を定義する。
 return [
 
     /*
@@ -13,6 +14,7 @@ return [
     |
     */
 
+    // ビューテンプレートを探すディレクトリを指定する。
     'paths' => [
         resource_path('views'),
     ],
@@ -28,6 +30,7 @@ return [
     |
     */
 
+    // Bladeのコンパイル結果を保存するディレクトリを指定する。
     'compiled' => env(
         'VIEW_COMPILED_PATH',
         realpath(storage_path('framework/views'))

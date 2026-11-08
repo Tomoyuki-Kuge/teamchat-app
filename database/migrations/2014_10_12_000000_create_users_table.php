@@ -4,9 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * 社員アカウントを保存する初期テーブル構成を定義する。
+ */
 return new class extends Migration
 {
     /**
+     * メールの一意制約とpassword列を持つusersテーブルを作成する。
+     *
      * Run the migrations.
      */
     public function up(): void
@@ -23,6 +28,8 @@ return new class extends Migration
     }
 
     /**
+     * usersテーブルが存在する場合に削除する。
+     *
      * Reverse the migrations.
      */
     public function down(): void

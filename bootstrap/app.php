@@ -16,6 +16,7 @@ use Illuminate\Foundation\Application;
 |
 */
 
+// 基準ディレクトリを指定してLaravelのアプリ本体を生成します。
 $app = new Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
@@ -31,16 +32,19 @@ $app = new Application(
 |
 */
 
+// HTTPリクエストを処理するKernelをコンテナに登録します。
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
     Kernel::class
 );
 
+// コンソールコマンドを処理するKernelをコンテナに登録します。
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
 );
 
+// 例外の報告と応答を担うHandlerをコンテナに登録します。
 $app->singleton(
     ExceptionHandler::class,
     Handler::class
@@ -57,4 +61,5 @@ $app->singleton(
 |
 */
 
+// 起動元のスクリプトへ構築済みのアプリを返します。
 return $app;

@@ -5,8 +5,14 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * チャンネル所属に参加順を記録する列を追加する。
+ */
 return new class extends Migration
 {
+    /**
+     * 参加順の列を追加・補完し、一意の自動採番列にする。
+     */
     public function up(): void
     {
         Schema::table('channel_user', function (Blueprint $table) {
@@ -27,6 +33,9 @@ return new class extends Migration
             MODIFY joined_order BIGINT UNSIGNED NOT NULL AUTO_INCREMENT');
     }
 
+    /**
+     * 参加順を記録する連番列を削除する。
+     */
     public function down(): void
     {
         Schema::table('channel_user', function (Blueprint $table) {

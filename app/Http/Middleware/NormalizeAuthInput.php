@@ -7,6 +7,9 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * 登録・ログイン時のメールを整え、ログイン状態の永続化を無効にする。
+ */
 class NormalizeAuthInput
 {
     // 登録・ログインの入力を、検証や回数制限より前に整えます。

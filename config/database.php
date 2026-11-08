@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 
+// データベースとRedisの接続先を定義します。
 return [
 
     /*
@@ -15,6 +16,7 @@ return [
     |
     */
 
+    // 標準で使うデータベース接続の名前を指定します。
     'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
@@ -33,6 +35,7 @@ return [
     |
     */
 
+    // データベースの種類ごとに接続情報と文字コードなどを設定します。
     'connections' => [
 
         'sqlite' => [
@@ -107,6 +110,7 @@ return [
     |
     */
 
+    // 実行済みマイグレーションを記録するテーブル名を指定します。
     'migrations' => 'migrations',
 
     /*
@@ -120,6 +124,7 @@ return [
     |
     */
 
+    // Redisを使う場合のクライアントと接続情報を設定します。
     'redis' => [
 
         'client' => env('REDIS_CLIENT', 'phpredis'),

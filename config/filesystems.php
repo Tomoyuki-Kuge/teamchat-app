@@ -1,5 +1,6 @@
 <?php
 
+// 保存ディスクとシンボリックリンクの設定を定義する。
 return [
 
     /*
@@ -13,6 +14,7 @@ return [
     |
     */
 
+    // ファイル操作で既定として使う保存ディスクを指定する。
     'default' => env('FILESYSTEM_DISK', 'local'),
 
     /*
@@ -28,6 +30,7 @@ return [
     |
     */
 
+    // ローカル・公開用・S3のディスク設定をまとめる。
     'disks' => [
 
         'local' => [
@@ -69,6 +72,7 @@ return [
     |
     */
 
+    // storage:linkで作成するシンボリックリンクの対応を指定する。
     'links' => [
         public_path('storage') => storage_path('app/public'),
     ],

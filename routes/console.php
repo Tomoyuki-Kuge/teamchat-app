@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
+// 格言を表示するinspireコマンドを登録する。
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');

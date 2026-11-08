@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
+ * テスト用の社員アカウントデータを生成する。
+ *
  * @extends Factory<User>
  */
 class UserFactory extends Factory
@@ -18,6 +20,8 @@ class UserFactory extends Factory
     protected static ?string $password;
 
     /**
+     * 社員アカウントの既定の属性値を生成する。
+     *
      * Define the model's default state.
      *
      * @return array<string, mixed>
@@ -34,6 +38,8 @@ class UserFactory extends Factory
     }
 
     /**
+     * メールアドレスが未確認のアカウント状態を定義する。
+     *
      * Indicate that the model's email address should be unverified.
      */
     public function unverified(): static

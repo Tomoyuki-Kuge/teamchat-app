@@ -8,8 +8,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * チャンネルのメンバー追加・解除を保存する。
+ */
 class SaveMember
 {
+    /**
+     * 社員の存在を確認し、未所属の場合にメンバーへ追加する。
+     */
     public function add(User $actor, Channel $channel, int $userId): void
     {
         $this->change($actor, $channel, function (Channel $current) use ($userId) {
@@ -20,6 +26,9 @@ class SaveMember
         });
     }
 
+    /**
+     * 社員の存在を確認し、チャンネルへの所属を解除する。
+     */
     public function remove(User $actor, Channel $channel, int $userId): void
     {
         $this->change($actor, $channel, function (Channel $current) use ($userId) {
@@ -30,6 +39,9 @@ class SaveMember
         }, 'removeMember', [$userId]);
     }
 
+    /**
+     * チャンネルをロックして現在の権限を再確認し、所属変更を実行する。
+     */
     private function change(User $actor, Channel $channel, callable $operation, string $ability = 'manageMembers', array $arguments = []): void
     {
         DB::transaction(function () use ($actor, $channel, $operation, $ability, $arguments) {

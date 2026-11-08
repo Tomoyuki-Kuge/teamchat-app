@@ -5,8 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
+/**
+ * メンバーの追加・解除に必要な認可と入力検証を担う。
+ */
 class MemberRequest extends FormRequest
 {
+    /**
+     * メンバーの追加・解除に必要な権限を確認する。
+     */
     public function authorize(): bool
     {
         if ($this->routeIs('members.destroy')) {
@@ -18,12 +24,18 @@ class MemberRequest extends FormRequest
         return true;
     }
 
+    /**
+     * 候補の検索語と追加対象の入力ルールを返す。
+     */
     public function rules(): array
     {
         return ['q' => ['nullable', 'string']] + ($this->routeIs('members.store')
             ? ['user_id' => ['bail', 'required', 'integer', 'exists:users,id']] : []);
     }
 
+    /**
+     * メンバー管理の入力エラーメッセージを返す。
+     */
     public function messages(): array
     {
         return [

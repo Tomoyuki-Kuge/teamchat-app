@@ -14,6 +14,9 @@ use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 
+/**
+ * Fortifyの入力検証・登録処理・画面遷移・試行制限を設定する。
+ */
 class FortifyServiceProvider extends ServiceProvider
 {
     // Fortifyの標準処理に、今回の入力チェックと画面遷移を組み込みます。

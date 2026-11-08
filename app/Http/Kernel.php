@@ -28,9 +28,14 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+/**
+ * HTTPリクエストに適用するミドルウェアとルート用の別名を定義する。
+ */
 class Kernel extends HttpKernel
 {
     /**
+     * すべてのHTTPリクエストに適用するミドルウェアを定義する。
+     *
      * The application's global HTTP middleware stack.
      *
      * These middleware are run during every request to your application.
@@ -48,6 +53,8 @@ class Kernel extends HttpKernel
     ];
 
     /**
+     * web・apiごとに適用するミドルウェアを定義する。
+     *
      * The application's route middleware groups.
      *
      * @var array<string, array<int, class-string|string>>
@@ -72,6 +79,8 @@ class Kernel extends HttpKernel
     ];
 
     /**
+     * ルートで使用できるミドルウェアの別名を定義する。
+     *
      * The application's middleware aliases.
      *
      * Aliases may be used instead of class names to conveniently assign middleware to routes and groups.

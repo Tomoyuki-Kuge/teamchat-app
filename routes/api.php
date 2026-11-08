@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Sanctumで認証された利用者の情報を返す。
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

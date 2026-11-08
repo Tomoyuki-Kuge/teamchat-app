@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 
+// セッションの保存方法・有効期間・Cookieの送信条件を定義します。
 return [
 
     /*
@@ -18,6 +19,7 @@ return [
     |
     */
 
+    // セッションデータの保存方式を指定します。
     'driver' => env('SESSION_DRIVER', 'file'),
 
     /*
@@ -31,6 +33,7 @@ return [
     |
     */
 
+    // セッションの無操作時の有効期間を分単位で指定します。
     'lifetime' => env('SESSION_LIFETIME', 120),
 
     'expire_on_close' => false,
@@ -46,6 +49,7 @@ return [
     |
     */
 
+    // 保存するセッションデータを暗号化するかを指定します。
     'encrypt' => false,
 
     /*
@@ -59,6 +63,7 @@ return [
     |
     */
 
+    // ファイル方式を使う場合のセッション保存先を指定します。
     'files' => storage_path('framework/sessions'),
 
     /*
@@ -113,6 +118,7 @@ return [
     |
     */
 
+    // 期限切れセッションの削除処理を実行する確率を指定します。
     'lottery' => [2, 100],
 
     /*
@@ -126,6 +132,7 @@ return [
     |
     */
 
+    // セッションを識別するCookieの名前を指定します。
     'cookie' => env(
         'SESSION_COOKIE',
         Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
@@ -168,6 +175,7 @@ return [
     |
     */
 
+    // セッションCookieをHTTPS通信だけに送るかを指定します。
     'secure' => env('SESSION_SECURE_COOKIE'),
 
     /*
@@ -181,6 +189,7 @@ return [
     |
     */
 
+    // JavaScriptからのセッションCookieの読み取りを制限します。
     'http_only' => true,
 
     /*
@@ -196,6 +205,7 @@ return [
     |
     */
 
+    // 別サイトからのリクエストでCookieを送る条件を指定します。
     'same_site' => 'lax',
 
     /*

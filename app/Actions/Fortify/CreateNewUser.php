@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
+/**
+ * Fortifyの新規アカウント登録処理を担う。
+ */
 class CreateNewUser implements CreatesNewUsers
 {
     // 登録内容を検証し、パスワードを元に戻せないハッシュ値にして保存します。

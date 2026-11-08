@@ -4,8 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * チャンネル情報を保存するテーブルを定義する。
+ */
 return new class extends Migration
 {
+    /**
+     * 未削除名の一意制約を含むチャンネルテーブルを作成する。
+     */
     public function up(): void
     {
         Schema::create('channels', function (Blueprint $table) {
@@ -24,6 +30,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * チャンネルテーブルを削除する。
+     */
     public function down(): void
     {
         Schema::dropIfExists('channels');

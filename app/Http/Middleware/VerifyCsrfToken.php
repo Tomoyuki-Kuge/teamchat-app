@@ -4,6 +4,9 @@ namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 
+/**
+ * 更新リクエストのCSRFトークンを検証する。
+ */
 class VerifyCsrfToken extends Middleware
 {
     /**

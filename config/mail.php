@@ -1,5 +1,6 @@
 <?php
 
+// メール送信方式、送信元、Markdown表示の設定を定義する。
 return [
 
     /*
@@ -13,6 +14,7 @@ return [
     |
     */
 
+    // メール送信で既定として使うメーラーを指定する。
     'default' => env('MAIL_MAILER', 'smtp'),
 
     /*
@@ -33,6 +35,7 @@ return [
     |
     */
 
+    // 利用時に選択する送信方式と接続設定を定義する。
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
@@ -107,6 +110,7 @@ return [
     |
     */
 
+    // 共通の送信元メールアドレスと表示名を指定する。
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
@@ -123,6 +127,7 @@ return [
     |
     */
 
+    // Markdownメールのテーマと部品テンプレートの探索先を指定する。
     'markdown' => [
         'theme' => 'default',
 

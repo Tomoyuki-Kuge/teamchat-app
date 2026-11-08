@@ -1,5 +1,6 @@
 <?php
 
+// 外部メールサービスを利用する際の認証・接続設定を定義する。
 return [
 
     /*
@@ -14,6 +15,7 @@ return [
     |
     */
 
+    // Mailgunのドメイン・認証情報・接続先を環境変数から設定する。
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
@@ -21,10 +23,12 @@ return [
         'scheme' => 'https',
     ],
 
+    // Postmarkを利用する際の認証トークンを指定する。
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
 
+    // Amazon SESを利用する際の認証情報とリージョンを指定する。
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),

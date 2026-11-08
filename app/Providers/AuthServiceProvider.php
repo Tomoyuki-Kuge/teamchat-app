@@ -8,6 +8,9 @@ use App\Policies\ChannelPolicy;
 use App\Policies\MessagePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+/**
+ * モデルと認可ポリシーの対応を定義する。
+ */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -21,6 +24,8 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
+     * 認証・認可の追加初期化用メソッド（現在は処理なし）。
+     *
      * Register any authentication / authorization services.
      */
     public function boot(): void

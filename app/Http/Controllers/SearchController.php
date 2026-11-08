@@ -8,8 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * メッセージ検索画面を扱う。
+ */
 class SearchController extends Controller
 {
+    /**
+     * 検索条件を検証し、閲覧可能なメッセージの検索結果を表示する。
+     */
     public function index(Request $request, MessageSearch $search): Response
     {
         $input = $request->query();

@@ -27,7 +27,10 @@ Route::middleware('guest')->group(function () {
 
 // ログイン済みの人だけが、チャンネルとログアウトを利用できます。
 Route::middleware('auth')->group(function () {
+    // 閲覧できるメッセージの本文検索を受け付ける。
     Route::get('/search', [SearchController::class, 'index'])->name('search');
+
+    // チャンネルの一覧・会話表示と作成・編集・削除を受け付ける。
     Route::get('/channels', [ChannelController::class, 'index'])->name('channels.index');
     Route::get('/channels/create', [ChannelController::class, 'create'])->name('channels.create');
     Route::post('/channels', [ChannelController::class, 'store'])->name('channels.store');
@@ -35,14 +38,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/channels/{channel}/edit', [ChannelController::class, 'edit'])->whereNumber('channel')->name('channels.edit');
     Route::patch('/channels/{channel}', [ChannelController::class, 'update'])->whereNumber('channel')->name('channels.update');
     Route::delete('/channels/{channel}', [ChannelController::class, 'destroy'])->whereNumber('channel')->name('channels.destroy');
+
+    // スレッドの表示と返信の投稿を受け付ける。
     Route::get('/channels/{channel}/threads/{message}', [ThreadController::class, 'show'])->whereNumber(['channel', 'message'])->name('threads.show');
     Route::post('/channels/{channel}/threads/{message}/replies', [ThreadController::class, 'store'])->whereNumber(['channel', 'message'])->name('replies.store');
+
+    // メッセージの投稿・編集・削除と削除確認を受け付ける。
     Route::post('/channels/{channel}/messages', [MessageController::class, 'store'])->whereNumber('channel')->name('messages.store');
     Route::get('/channels/{channel}/messages/{message}/delete-confirmation', [MessageController::class, 'deleteConfirmation'])->whereNumber(['channel', 'message'])->name('messages.delete-confirmation');
     Route::patch('/channels/{channel}/messages/{message}', [MessageController::class, 'update'])->whereNumber(['channel', 'message'])->name('messages.update');
     Route::delete('/channels/{channel}/messages/{message}', [MessageController::class, 'destroy'])->whereNumber(['channel', 'message'])->name('messages.destroy');
+
+    // プライベートチャンネルのメンバー管理を受け付ける。
     Route::get('/channels/{channel}/members', [MemberController::class, 'index'])->whereNumber('channel')->name('members.index');
     Route::post('/channels/{channel}/members', [MemberController::class, 'store'])->whereNumber('channel')->name('members.store');
     Route::delete('/channels/{channel}/members/{user}', [MemberController::class, 'destroy'])->whereNumber(['channel', 'user'])->name('members.destroy');
+
+    // ログアウト処理をFortifyへ引き渡す。
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

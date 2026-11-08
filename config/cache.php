@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 
+// キャッシュの既定保存先とストア別設定を定義する。
 return [
 
     /*
@@ -15,6 +16,7 @@ return [
     |
     */
 
+    // キャッシュ操作で既定として使うストアを指定する。
     'default' => env('CACHE_DRIVER', 'file'),
 
     /*
@@ -31,6 +33,7 @@ return [
     |
     */
 
+    // 利用時に選択するキャッシュストアごとの接続先や保存先を定義する。
     'stores' => [
 
         'apc' => [
@@ -106,6 +109,7 @@ return [
     |
     */
 
+    // 対応するキャッシュストアでキーの衝突を避ける接頭辞を指定する。
     'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache_'),
 
 ];

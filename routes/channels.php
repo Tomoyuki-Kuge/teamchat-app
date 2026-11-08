@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
+// ユーザー本人のブロードキャストチャンネルへの購読を許可する。
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });

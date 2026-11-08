@@ -11,8 +11,14 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * 会話・スレッド画面の表示と入力エラー・編集競合の再表示を扱う。
+ */
 class ConversationPage
 {
+    /**
+     * 会話画面を表示し、編集競合時は現在の権限と状態をロック下で再確認する。
+     */
     public function render(Request $request, Channel $channel, ?Message $conflict = null): Response
     {
         if ($conflict) {
@@ -33,6 +39,9 @@ class ConversationPage
         return $this->renderPage($request, $channel);
     }
 
+    /**
+     * 対象と権限を確認し、表示範囲・フォーム状態を含む会話画面を返す。
+     */
     private function renderPage(Request $request, Channel $channel, ?Message $conflict = null): Response
     {
         Gate::authorize('view', $channel);
@@ -70,6 +79,9 @@ class ConversationPage
         return response()->view('channels.show', compact('channel', 'range', 'editMessage', 'composer', 'editor', 'conflict', 'invalid', 'rangeError', 'replyComposer'), $invalid ? 422 : ($conflict ? 409 : 200));
     }
 
+    /**
+     * 対象フォームの入力値とエラーを復元する。
+     */
     private function formState(Request $request, string $key, array $defaults): array
     {
         $matches = $request->session()->get('message_form') === $key;

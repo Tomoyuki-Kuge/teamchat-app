@@ -4,6 +4,9 @@ namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\TrimStrings as Middleware;
 
+/**
+ * 指定項目を除き、文字列入力の前後空白を取り除く。
+ */
 class TrimStrings extends Middleware
 {
     /**

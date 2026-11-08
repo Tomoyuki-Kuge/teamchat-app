@@ -9,8 +9,14 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * 画面確認用の初期会話と返信を登録する。
+ */
 class MessageSeeder extends Seeder
 {
+    /**
+     * 会話が1件もないチャンネルにだけ、初期投稿と返信を作成する。
+     */
     public function run(): void
     {
         $authors = User::whereIn('email', ['sato@example.com', 'suzuki@example.com', 'takahashi@example.com'])->get()->keyBy('email');
@@ -47,6 +53,9 @@ class MessageSeeder extends Seeder
         }
     }
 
+    /**
+     * チャンネルごとの初期投稿本文を返す。
+     */
     private function conversations(): array
     {
         return [

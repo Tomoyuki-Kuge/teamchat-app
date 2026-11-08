@@ -8,8 +8,14 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
+/**
+ * チャンネルの作成・編集・削除に必要な権限と入力を検証する。
+ */
 class ChannelRequest extends FormRequest
 {
+    /**
+     * 入力検証の前にチャンネルの操作権限を確認する。
+     */
     public function authorize(): bool
     {
         // 入力不備より先に、存在を明かせる対象か・管理できるかを確認します。
@@ -20,6 +26,9 @@ class ChannelRequest extends FormRequest
         return true;
     }
 
+    /**
+     * チャンネルの操作に応じた入力チェックのルールを返す。
+     */
     public function rules(): array
     {
         $notBlank = function (string $attribute, mixed $value, Closure $fail): void {
@@ -52,6 +61,9 @@ class ChannelRequest extends FormRequest
         return $rules;
     }
 
+    /**
+     * チャンネル入力の検証エラーに表示する日本語メッセージを返す。
+     */
     public function messages(): array
     {
         return [

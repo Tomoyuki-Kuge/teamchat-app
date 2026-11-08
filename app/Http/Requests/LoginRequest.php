@@ -5,6 +5,9 @@ namespace App\Http\Requests;
 use App\Support\AuthValidation;
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 
+/**
+ * Fortifyのログイン入力にアプリ共通の検証ルールとエラー文言を適用する。
+ */
 class LoginRequest extends FortifyLoginRequest
 {
     // Fortifyのログイン処理に、このアプリの入力チェックを適用します。

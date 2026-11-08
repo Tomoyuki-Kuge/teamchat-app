@@ -13,8 +13,14 @@ use Illuminate\Support\MessageBag;
 use Normalizer;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * プライベートチャンネルのメンバー管理画面と所属変更を扱う。
+ */
 class MemberController extends Controller
 {
+    /**
+     * メンバー一覧と追加候補の検索結果を表示する。
+     */
     public function index(Request $request, Channel $channel): Response
     {
         $this->authorize('manageMembers', $channel);
@@ -45,6 +51,9 @@ class MemberController extends Controller
         return response()->view('members.index', compact('channel', 'members', 'candidates', 'q', 'searched', 'feedback', 'removeFeedback', 'selected'), $invalid ? 422 : 200);
     }
 
+    /**
+     * 選択した社員をメンバーに追加して一覧へ戻す。
+     */
     public function store(MemberRequest $request, Channel $channel, SaveMember $action): RedirectResponse
     {
         $action->add($request->user(), $channel, (int) $request->validated('user_id'));
@@ -52,6 +61,9 @@ class MemberController extends Controller
         return $this->back($channel, $request);
     }
 
+    /**
+     * 指定した社員の所属を解除して一覧へ戻す。
+     */
     public function destroy(MemberRequest $request, Channel $channel, string $user, SaveMember $action): RedirectResponse
     {
         $action->remove($request->user(), $channel, (int) $user);
@@ -59,11 +71,17 @@ class MemberController extends Controller
         return $this->back($channel, $request);
     }
 
+    /**
+     * 検索語を引き継いでメンバー管理画面へ戻す。
+     */
     private function back(Channel $channel, Request $request): RedirectResponse
     {
         return redirect()->route('members.index', ['channel' => $channel, 'q' => $request->input('q')], 303);
     }
 
+    /**
+     * 検索比較用に文字の表記を揃える。
+     */
     private function compare(string $value): string
     {
         return strtolower(Normalizer::normalize($value, Normalizer::FORM_KC));

@@ -5,6 +5,7 @@ use App\Http\Middleware\VerifyCsrfToken;
 use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 use Laravel\Sanctum\Sanctum;
 
+// Sanctumが使うセッション認証とAPIトークンの設定を定義します。
 return [
 
     /*
@@ -18,6 +19,7 @@ return [
     |
     */
 
+    // SanctumでCookieによるセッション認証を扱うドメインを指定します。
     'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
         '%s%s',
         'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1',
@@ -36,6 +38,7 @@ return [
     |
     */
 
+    // トークン認証より先に確認する認証ガードを指定します。
     'guard' => ['web'],
 
     /*
@@ -49,6 +52,7 @@ return [
     |
     */
 
+    // APIトークンに共通で適用する有効期間を分単位で指定します。
     'expiration' => null,
 
     /*
@@ -64,6 +68,7 @@ return [
     |
     */
 
+    // 発行するAPIトークンの先頭に付ける文字列を指定します。
     'token_prefix' => env('SANCTUM_TOKEN_PREFIX', ''),
 
     /*
@@ -77,6 +82,7 @@ return [
     |
     */
 
+    // Sanctumのセッション認証で使うミドルウェアを指定します。
     'middleware' => [
         'authenticate_session' => AuthenticateSession::class,
         'encrypt_cookies' => EncryptCookies::class,

@@ -4,6 +4,9 @@ namespace App\Support;
 
 use Closure;
 
+/**
+ * 登録・ログインの入力検証ルールと日本語エラー文を共通化する。
+ */
 class AuthValidation
 {
     // 共通の入力チェックに、登録時だけ名前・重複・パスワード確認を追加します。

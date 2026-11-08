@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * 会話の表示範囲の取得・保持と内部URL生成を担う。
+ */
 class ConversationRange
 {
     public readonly Collection $messages;
@@ -18,6 +21,9 @@ class ConversationRange
 
     public readonly array $parameters;
 
+    /**
+     * 指定範囲の通常投稿または返信を取得し、表示順と引き継ぎ情報を整える。
+     */
     private function __construct(private Channel $channel, ?Message $boundary, int $pages, public readonly ?Message $thread = null, public readonly ?self $replies = null, private string $prefix = 'messages')
     {
         $query = $channel->messages()->where('parent_message_id', $prefix === 'replies' ? $thread->id : null);
@@ -85,11 +91,17 @@ class ConversationRange
         return $resolved;
     }
 
+    /**
+     * 対象IDと表示単位数に共通する正の整数の検証ルールを返す。
+     */
     private static function idRules(): array
     {
         return ['bail', 'required', 'integer', 'min:1', 'max:'.PHP_INT_MAX, 'regex:/^[0-9]+$/D'];
     }
 
+    /**
+     * 表示条件を検証し、通常投稿と返信の表示範囲を個別に構築する。
+     */
     public static function from(Channel $channel, array $input, ?Message $thread = null, ?Message $target = null, string $prefix = 'messages', ?array $resolved = null): self
     {
         if ($prefix === 'messages') {
@@ -122,22 +134,34 @@ class ConversationRange
         return new self($channel, $boundary, (int) ($input[$prefix.'_pages'] ?? 1), $thread, $replies, $prefix);
     }
 
+    /**
+     * 対象が取得済みの通常投稿・返信またはスレッドの親か判定する。
+     */
     public function contains(Message $message): bool
     {
         return $this->messages->contains('id', $message->id) || $this->thread?->id === $message->id || ($this->replies?->messages->contains('id', $message->id) ?? false);
     }
 
+    /**
+     * 操作元と通常投稿・返信の表示範囲を引き継ぐ値を返す。
+     */
     public function context(): array
     {
         return $this->parameters + ($this->thread ? ['origin' => 'thread', 'thread' => $this->thread->id] + ($this->replies?->parameters ?? []) : ['origin' => 'channel']);
     }
 
+    /**
+     * 表示範囲と指定したアンカーを引き継ぐ内部URLを生成する。
+     */
     public function url(array $extra = [], ?int $anchor = null): string
     {
         return route($this->thread ? 'threads.show' : 'channels.show', ['channel' => $this->channel->id] + ($this->thread ? ['message' => $this->thread->id] : []) + $extra + array_diff_key($this->context(), ['origin' => true, 'thread' => true]))
             .($anchor ? '#message-'.$anchor : '');
     }
 
+    /**
+     * 現在の上限を保って表示件数を10件増やすURLを生成する。
+     */
     public function olderUrl(): string
     {
         $oldest = $this->messages->first()?->id;

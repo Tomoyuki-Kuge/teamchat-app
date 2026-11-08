@@ -9,8 +9,14 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
+/**
+ * 通常投稿・返信の作成、本文編集、個別削除を保存する。
+ */
 class SaveMessage
 {
+    /**
+     * 現在の権限と返信先を確認し、通常投稿または返信を保存する。
+     */
     public function create(User $user, Channel $channel, string $body, ?Message $parent = null): Message
     {
         return DB::transaction(function () use ($user, $channel, $body, $parent) {
@@ -27,6 +33,9 @@ class SaveMessage
         });
     }
 
+    /**
+     * 版の一致を確認し、本文・編集日時・版をまとめて更新する。
+     */
     public function update(User $user, Channel $channel, Message $message, string $body, int $expectedVersion): Message
     {
         return DB::transaction(function () use ($user, $channel, $message, $body, $expectedVersion) {
@@ -43,6 +52,9 @@ class SaveMessage
         });
     }
 
+    /**
+     * 本人の未削除メッセージに削除日時を設定する。
+     */
     public function delete(User $user, Channel $channel, Message $message): void
     {
         DB::transaction(function () use ($user, $channel, $message) {
@@ -52,6 +64,9 @@ class SaveMessage
         });
     }
 
+    /**
+     * チャンネルをロックして再取得し、現在の閲覧権限を確認する。
+     */
     private function lockChannel(User $user, Channel $channel): Channel
     {
         $current = Channel::whereKey($channel->id)->lockForUpdate()->firstOrFail();
@@ -60,6 +75,9 @@ class SaveMessage
         return $current;
     }
 
+    /**
+     * チャンネルと投稿を順にロックし、本人の操作権限と未削除を確認する。
+     */
     private function lockMessage(User $user, Channel $channel, Message $message, string $ability): Message
     {
         $currentChannel = $this->lockChannel($user, $channel);

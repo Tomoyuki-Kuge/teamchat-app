@@ -4,6 +4,9 @@ namespace App\Http\Responses;
 
 use Laravel\Fortify\Contracts\LoginResponse as ResponseContract;
 
+/**
+ * Fortifyのログイン成功後の応答を定義する。
+ */
 class LoginResponse implements ResponseContract
 {
     // ログイン成功後は、GETでチャンネル一覧へ移動します（303）。

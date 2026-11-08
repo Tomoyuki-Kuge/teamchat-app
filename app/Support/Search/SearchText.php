@@ -6,18 +6,30 @@ use Illuminate\Support\HtmlString;
 use LogicException;
 use Normalizer;
 
+/**
+ * 検索用テキストの正規化・検索語分割・一致箇所の強調を行う。
+ */
 class SearchText
 {
+    /**
+     * 比較用にNFKC正規化し、英字を小文字に揃える。
+     */
     public static function normalize(string $value): string
     {
         return strtolower(Normalizer::normalize($value, Normalizer::FORM_KC));
     }
 
+    /**
+     * 正規化した検索語を空白で分割し、空要素と重複を除く。
+     */
     public static function words(string $query): array
     {
         return array_values(array_unique(preg_split('/[\s\p{Z}]+/u', self::normalize($query), -1, PREG_SPLIT_NO_EMPTY)));
     }
 
+    /**
+     * 正規化後の一致箇所を元本文へ対応付け、エスケープ済みの強調HTMLを返す。
+     */
     public static function highlight(string $body, array $words): HtmlString
     {
         preg_match_all('/\X/u', $body, $matches, PREG_OFFSET_CAPTURE);

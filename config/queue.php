@@ -1,5 +1,6 @@
 <?php
 
+// ジョブの実行接続とバッチ・失敗記録の保存先を定義する。
 return [
 
     /*
@@ -13,6 +14,7 @@ return [
     |
     */
 
+    // ジョブの既定の実行接続を指定する。
     'default' => env('QUEUE_CONNECTION', 'sync'),
 
     /*
@@ -28,6 +30,7 @@ return [
     |
     */
 
+    // 同期実行や各キュー接続で使う設定を定義する。
     'connections' => [
 
         'sync' => [
@@ -84,6 +87,7 @@ return [
     |
     */
 
+    // ジョブバッチ情報の保存先データベースとテーブルを指定する。
     'batching' => [
         'database' => env('DB_CONNECTION', 'mysql'),
         'table' => 'job_batches',
@@ -100,6 +104,7 @@ return [
     |
     */
 
+    // 失敗したジョブの記録方式と保存先を指定する。
     'failed' => [
         'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
         'database' => env('DB_CONNECTION', 'mysql'),

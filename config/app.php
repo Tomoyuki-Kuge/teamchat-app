@@ -8,6 +8,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
+// アプリの基本設定と起動時に読み込むサービスを定義します。
 return [
 
     /*
@@ -34,6 +35,7 @@ return [
     |
     */
 
+    // アプリの実行環境を指定します。
     'env' => env('APP_ENV', 'production'),
 
     /*
@@ -47,6 +49,7 @@ return [
     |
     */
 
+    // エラーの詳細を画面へ表示するかを指定します。
     'debug' => (bool) env('APP_DEBUG', false),
 
     /*
@@ -60,6 +63,7 @@ return [
     |
     */
 
+    // コマンド実行時のURL生成に使う基準URLを指定します。
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL'),
@@ -75,6 +79,7 @@ return [
     |
     */
 
+    // アプリ内部で使う標準のタイムゾーンを指定します。
     'timezone' => 'UTC',
 
     /*
@@ -88,6 +93,7 @@ return [
     |
     */
 
+    // 翻訳メッセージに使う標準の言語を指定します。
     'locale' => 'ja',
 
     /*
@@ -127,6 +133,7 @@ return [
     |
     */
 
+    // データの暗号化に使うキーと方式を指定します。
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
@@ -144,6 +151,7 @@ return [
     |
     */
 
+    // メンテナンス状態の管理方法を指定します。
     'maintenance' => [
         'driver' => 'file',
         // 'store' => 'redis',
@@ -160,6 +168,7 @@ return [
     |
     */
 
+    // Laravel標準とアプリ固有のサービスプロバイダーを登録します。
     'providers' => ServiceProvider::defaultProviders()->merge([
         /*
          * Package Service Providers...
@@ -187,6 +196,7 @@ return [
     |
     */
 
+    // ファサードなどを短いクラス名で参照するための別名を登録します。
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),

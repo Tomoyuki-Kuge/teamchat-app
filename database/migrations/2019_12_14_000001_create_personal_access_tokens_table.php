@@ -4,9 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * 個人アクセストークンの保存用テーブルを定義する。
+ */
 return new class extends Migration
 {
     /**
+     * トークン情報を保持するpersonal_access_tokensテーブルを作成する。
+     *
      * Run the migrations.
      */
     public function up(): void
@@ -24,6 +29,8 @@ return new class extends Migration
     }
 
     /**
+     * personal_access_tokensテーブルが存在する場合に削除する。
+     *
      * Reverse the migrations.
      */
     public function down(): void

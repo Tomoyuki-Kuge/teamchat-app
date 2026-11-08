@@ -12,12 +12,18 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * メッセージ操作の認可と入力検証を担う。
+ */
 class MessageRequest extends FormRequest
 {
     public ?Message $target = null;
 
     public ?ConversationRange $range = null;
 
+    /**
+     * 操作対象と権限を確認し、会話の表示範囲を確定する。
+     */
     public function authorize(): bool
     {
         $channel = $this->route('channel');
@@ -44,6 +50,9 @@ class MessageRequest extends FormRequest
         return true;
     }
 
+    /**
+     * 操作に応じた本文と編集バージョンの入力ルールを返す。
+     */
     public function rules(): array
     {
         if ($this->routeIs('messages.destroy')) {
@@ -61,6 +70,9 @@ class MessageRequest extends FormRequest
         return $rules;
     }
 
+    /**
+     * メッセージ操作の入力エラーメッセージを返す。
+     */
     public function messages(): array
     {
         return [
@@ -71,11 +83,17 @@ class MessageRequest extends FormRequest
         ];
     }
 
+    /**
+     * 入力検証のエラーを会話画面への差し戻しに渡す。
+     */
     protected function failedValidation(Validator $validator): void
     {
         $this->reject($validator->errors()->toArray());
     }
 
+    /**
+     * 入力とエラーを保持し、元の会話画面へ戻す。
+     */
     private function reject(array $errors): never
     {
         $edit = $this->routeIs('messages.update') && ($this->range?->contains($this->target) ?? false);

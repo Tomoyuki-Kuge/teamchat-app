@@ -7,6 +7,9 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
+/**
+ * イベントとリスナーの対応と自動探索の方針を定義する。
+ */
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -21,6 +24,8 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     /**
+     * 追加のイベント登録処理は定義していない。
+     *
      * Register any events for your application.
      */
     public function boot(): void
@@ -29,6 +34,8 @@ class EventServiceProvider extends ServiceProvider
     }
 
     /**
+     * イベントとリスナーの自動探索を無効にする。
+     *
      * Determine if events and listeners should be automatically discovered.
      */
     public function shouldDiscoverEvents(): bool

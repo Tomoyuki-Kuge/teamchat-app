@@ -4,6 +4,9 @@ namespace App\Http\Middleware;
 
 use Illuminate\Routing\Middleware\ValidateSignature as Middleware;
 
+/**
+ * 署名付きURLの有効性を検証する。
+ */
 class ValidateSignature extends Middleware
 {
     /**

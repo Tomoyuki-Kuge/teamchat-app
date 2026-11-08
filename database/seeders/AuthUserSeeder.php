@@ -6,6 +6,9 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * 動作確認用の固定アカウントを用意する。
+ */
 class AuthUserSeeder extends Seeder
 {
     // 動作確認用の3アカウントを、既存のユーザーを上書きせずに用意します。

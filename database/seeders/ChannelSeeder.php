@@ -7,8 +7,14 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * 初期チャンネルと所属メンバーを登録する。
+ */
 class ChannelSeeder extends Seeder
 {
+    /**
+     * 未削除の同名チャンネルがない場合に、初期設定と所属を作成する。
+     */
     public function run(): void
     {
         foreach ([

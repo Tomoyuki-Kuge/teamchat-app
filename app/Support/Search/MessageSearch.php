@@ -7,8 +7,14 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * 閲覧可能な未削除メッセージの本文検索とページ分割を行う。
+ */
 class MessageSearch
 {
+    /**
+     * 本文を100件ずつ照合し、一致件数と指定ページの最大10件を返す。
+     */
     public function find(User $user, array $words, string $sort, int $page, ?int $until): array
     {
         $query = Message::query()->whereNull('messages.deleted_at')

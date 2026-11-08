@@ -1,5 +1,6 @@
 <?php
 
+// パスワードのハッシュ方式と計算負荷を定義します。
 return [
 
     /*
@@ -29,6 +30,7 @@ return [
     |
     */
 
+    // Bcryptを使う場合の計算回数と方式の検証を設定します。
     'bcrypt' => [
         'rounds' => env('BCRYPT_ROUNDS', 12),
         'verify' => true,
@@ -45,6 +47,7 @@ return [
     |
     */
 
+    // Argon系のハッシュ計算に使うメモリ量・並列数・反復回数を設定します。
     'argon' => [
         'memory' => 65536,
         'threads' => 1,
