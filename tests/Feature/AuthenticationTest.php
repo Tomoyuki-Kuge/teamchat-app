@@ -84,7 +84,7 @@ class AuthenticationTest extends TestCase
         $this->get('/channels')->assertOk()->assertSee('登録 社員')->assertSee('ログアウト')
             ->assertSee('チームチャットアプリ')->assertSee('チャンネル一覧')
             ->assertSee('<nav', false)->assertSee('チャンネル一覧を見る')
-            ->assertDontSee('メッセージを検索')->assertSee('公開チャンネルは');
+            ->assertSee('メッセージを検索')->assertSee('公開チャンネルは');
     }
 
     #[DataProvider('invalidRegistrationInputs')]

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -26,6 +27,7 @@ Route::middleware('guest')->group(function () {
 
 // ログイン済みの人だけが、チャンネルとログアウトを利用できます。
 Route::middleware('auth')->group(function () {
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
     Route::get('/channels', [ChannelController::class, 'index'])->name('channels.index');
     Route::get('/channels/create', [ChannelController::class, 'create'])->name('channels.create');
     Route::post('/channels', [ChannelController::class, 'store'])->name('channels.store');
