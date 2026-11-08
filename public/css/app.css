@@ -402,3 +402,11 @@ a.icon-btn:hover{text-decoration:none}
 .thread-panel__head h2 { font-size: var(--fs-label); margin: 0; }
 .thread-panel__messages { flex: 1; overflow-y: auto; min-height: 0; padding: var(--sp-4) 0; }
 .thread-count, .thread-empty { padding: var(--sp-3) var(--sp-4); color: var(--text-muted); font-size: var(--fs-caption); }
+
+.search-form{margin:var(--sp-5) 0 var(--sp-6);max-width:560px}
+.search-summary{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);margin-bottom:var(--sp-3)}
+.search-summary .input{width:auto}
+.search-result{color:var(--text)}
+.search-result:hover{text-decoration:none;background:var(--surface-hover)}
+.search-pagination{display:flex;gap:var(--sp-2);justify-content:center;margin-top:var(--sp-6)}
+.search-pagination [aria-current="page"]{background:var(--accent-soft);border-color:var(--accent)}
