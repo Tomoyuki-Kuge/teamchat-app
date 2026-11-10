@@ -294,7 +294,7 @@ class AuthenticationTest extends TestCase
 
     public function test_unauthenticated_json_requests_return_401_without_redirecting(): void
     {
-        $this->getJson('/api/user')
+        $this->getJson('/channels')
             ->assertUnauthorized()
             ->assertHeader('Content-Type', 'application/json')
             ->assertHeaderMissing('Location')

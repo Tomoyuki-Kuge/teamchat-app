@@ -2,14 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
 /**
- * 画面・APIのルートとAPIのリクエスト回数制限を設定する。
+ * 画面・APIのルートを設定する。
  */
 class RouteServiceProvider extends ServiceProvider
 {
@@ -23,16 +20,12 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/channels';
 
     /**
-     * APIの回数制限を登録し、web・apiのルートファイルを読み込む。
+     * web・apiのルートファイルを読み込む。
      *
      * Define your route model bindings, pattern filters, and other route configuration.
      */
     public function boot(): void
     {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
-
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')

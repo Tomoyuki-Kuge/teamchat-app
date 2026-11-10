@@ -1,20 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\PublicChannelController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-// Sanctumで認証された利用者の情報を返す。
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/channels', [PublicChannelController::class, 'index'])->name('api.channels.index');
+Route::get('/channels/{channel}/messages', [PublicChannelController::class, 'messages'])->name('api.messages.index');

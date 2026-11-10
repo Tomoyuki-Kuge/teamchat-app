@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Foundation\Http\Middleware\TrimStrings as Middleware;
 
 /**
@@ -9,6 +10,12 @@ use Illuminate\Foundation\Http\Middleware\TrimStrings as Middleware;
  */
 class TrimStrings extends Middleware
 {
+    // 公開APIの数字クエリは前後空白を除去せず、送信された形式を検証します。
+    public function handle($request, Closure $next)
+    {
+        return $request->is('api', 'api/*') ? $next($request) : parent::handle($request, $next);
+    }
+
     /**
      * The names of the attributes that should not be trimmed.
      *
