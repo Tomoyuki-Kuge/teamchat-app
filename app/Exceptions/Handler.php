@@ -2,9 +2,11 @@
 
 namespace App\Exceptions;
 
+use App\Http\Responses\Api\PublicApiResponse;
 use App\Models\Channel;
 use App\Models\Message;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Log;
@@ -33,8 +35,8 @@ class Handler extends ExceptionHandler
                 'route' => request()->route()?->getName(),
             ];
             $channel = request()->route('channel');
-            if ($channel instanceof Channel) {
-                $context['channel_id'] = $channel->id;
+            if ($channel instanceof Channel || (is_string($channel) && ctype_digit($channel))) {
+                $context['channel_id'] = $channel instanceof Channel ? $channel->id : (int) $channel;
             }
             $message = request()->route('message');
             if ($message instanceof Message || (is_string($message) && ctype_digit($message))) {
@@ -64,6 +66,28 @@ class Handler extends ExceptionHandler
 
             return null;
         });
+    }
+
+    // ルート照合前の例外もURLで公開APIと判別し、AcceptによらずJSONへ統一します。
+    public function render($request, Throwable $exception)
+    {
+        if ($request->is('api', 'api/*')) {
+            $status = $exception instanceof ValidationException ? 422
+                : ($exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500);
+            if ($exception instanceof ModelNotFoundException) {
+                $status = 404;
+            }
+            if (! in_array($status, [404, 405, 422], true)) {
+                $status = 500;
+            }
+
+            return PublicApiResponse::error($status,
+                $exception instanceof ValidationException ? $exception->errors() : [],
+                $status === 405 ? ['Allow' => 'GET, HEAD'] : [],
+            )->prepare($request);
+        }
+
+        return parent::render($request, $exception);
     }
 
     // 入力エラー時は操作ごとのフォームへ戻し、許可した入力だけを再表示します。
