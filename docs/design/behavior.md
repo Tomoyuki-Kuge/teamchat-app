@@ -152,6 +152,8 @@ sequenceDiagram
 
 Laravelの標準的なMVC構成に従う。
 
+以下のIssue別の節にある「未実装」「後続Issue」や確認範囲は、各Issue当時の分担・検証対象を示す。現在はスレッド・検索・公開APIまで実装済みで、受け入れ条件は[受け入れ条件](acceptance.md)、確認結果は各検証記録を参照する。
+
 ### メッセージの実装（Issue #4）
 
 - Controllerは会話の再表示・303遷移、FormRequestは認可後の本文・版の検証、MessagePolicyはチャンネル閲覧確認後の本人確認、SaveMessage Actionは保存を担当する。追加パッケージは使わない。
