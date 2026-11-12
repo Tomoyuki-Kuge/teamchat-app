@@ -1,0 +1,545 @@
+README再現確認（独立したSail環境） — 2026-11-12（JST）
+Source: GitHub Tomoyuki-Kuge/teamchat-app, chore/handover
+Commit: 9d68c7dc56715e4abaa12f7fb53b9813491865ed
+Clone parent: /Users/dev/Sates/laravel-practice/readme-recheck-20261112
+Repository: /Users/dev/Sates/laravel-practice/readme-recheck-20261112/teamchat-app
+READMEのclone行のみ -b chore/handover 付きcloneで実施済みとして省略。
+親フォルダの作成とREADME・Git来歴の読み取りは、起動コマンドとは別に記録。
+手順3のdotenv設定例は、記載どおりのファイル編集として反映。起動コマンドへ引数や環境変数を追加していない。
+通常停止・再開と、破棄可能な検証用DBの削除・再作成もREADMEの順に実行。
+出力のANSI色指定・行末空白を除去して保存。アプリケーションキー等の秘密値を出力していない。
+
+--- GitHubからclone ---
+$ git clone -b chore/handover https://github.com/Tomoyuki-Kuge/teamchat-app.git
+Cloning into 'teamchat-app'...
+
+
+--- clone出力 ---
+
+exit_code: 0
+
+--- README: clone先へ移動 ---
+$ cd teamchat-app
+
+exit_code: 0
+
+--- README: Composer install ---
+$ docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    -e COMPOSER_CACHE_DIR=/tmp/composer_cache \
+    laravelsail/php82-composer:latest \
+    composer install
+Installing dependencies from lock file (including require-dev)
+Verifying lock file contents can be installed on current platform.
+Package operations: 115 installs, 0 updates, 0 removals
+  - Downloading dasprid/enum (1.0.7)
+  - Downloading doctrine/inflector (2.1.0)
+  - Downloading doctrine/lexer (3.0.1)
+  - Downloading dragonmantank/cron-expression (v3.6.0)
+  - Downloading symfony/deprecation-contracts (v3.7.1)
+  - Downloading psr/container (2.0.2)
+  - Downloading fakerphp/faker (v1.24.1)
+  - Downloading symfony/polyfill-php83 (v1.41.0)
+  - Downloading symfony/polyfill-mbstring (v1.38.2)
+  - Downloading symfony/http-foundation (v6.4.43)
+  - Downloading fruitcake/php-cors (v1.4.0)
+  - Downloading symfony/polyfill-php80 (v1.37.0)
+  - Downloading psr/http-message (2.0)
+  - Downloading psr/http-client (1.0.3)
+  - Downloading ralouphie/getallheaders (3.0.3)
+  - Downloading psr/http-factory (1.1.0)
+  - Downloading guzzlehttp/psr7 (2.13.0)
+  - Downloading guzzlehttp/promises (2.5.2)
+  - Downloading guzzlehttp/guzzle (7.15.3)
+  - Downloading guzzlehttp/uri-template (v1.0.10)
+  - Downloading paragonie/constant_time_encoding (v3.1.3)
+  - Downloading pragmarx/google2fa (v9.1.0)
+  - Downloading voku/portable-ascii (2.1.1)
+  - Downloading symfony/polyfill-ctype (v1.37.0)
+  - Downloading phpoption/phpoption (1.9.5)
+  - Downloading graham-campbell/result-type (v1.1.4)
+  - Downloading vlucas/phpdotenv (v5.6.4)
+  - Downloading symfony/css-selector (v7.4.9)
+  - Downloading tijsverkoyen/css-to-inline-styles (v2.4.0)
+  - Downloading symfony/var-dumper (v6.4.43)
+  - Downloading symfony/polyfill-uuid (v1.37.0)
+  - Downloading symfony/uid (v6.4.32)
+  - Downloading symfony/routing (v6.4.43)
+  - Downloading symfony/process (v6.4.41)
+  - Downloading symfony/polyfill-intl-normalizer (v1.38.0)
+  - Downloading symfony/polyfill-intl-idn (v1.38.1)
+  - Downloading symfony/mime (v6.4.43)
+  - Downloading symfony/service-contracts (v3.7.1)
+  - Downloading psr/event-dispatcher (1.0.0)
+  - Downloading symfony/event-dispatcher-contracts (v3.7.1)
+  - Downloading symfony/event-dispatcher (v7.4.15)
+  - Downloading psr/log (3.0.2)
+  - Downloading egulias/email-validator (4.0.4)
+  - Downloading symfony/mailer (v6.4.43)
+  - Downloading symfony/error-handler (v6.4.43)
+  - Downloading symfony/http-kernel (v6.4.43)
+  - Downloading symfony/finder (v6.4.42)
+  - Downloading symfony/polyfill-intl-grapheme (v1.41.0)
+  - Downloading symfony/string (v7.4.15)
+  - Downloading symfony/console (v6.4.43)
+  - Downloading ramsey/collection (2.1.1)
+  - Downloading brick/math (0.12.3)
+  - Downloading ramsey/uuid (4.9.3)
+  - Downloading psr/simple-cache (3.0.0)
+  - Downloading nunomaduro/termwind (v1.17.0)
+  - Downloading symfony/translation-contracts (v3.7.1)
+  - Downloading symfony/translation (v6.4.42)
+  - Downloading psr/clock (1.0.0)
+  - Downloading carbonphp/carbon-doctrine-types (2.1.0)
+  - Downloading nesbot/carbon (2.73.0)
+  - Downloading monolog/monolog (3.10.0)
+  - Downloading league/mime-type-detection (1.17.0)
+  - Downloading league/flysystem (3.35.2)
+  - Downloading league/flysystem-local (3.31.0)
+  - Downloading nette/utils (v4.1.5)
+  - Downloading nette/schema (v1.3.5)
+  - Downloading dflydev/dot-access-data (v3.0.3)
+  - Downloading league/config (v1.2.0)
+  - Downloading league/commonmark (2.10.0)
+  - Downloading laravel/serializable-closure (v1.3.7)
+  - Downloading laravel/framework (v10.50.3)
+  - Downloading laravel/prompts (v0.1.25)
+  - Downloading bacon/bacon-qr-code (v3.1.1)
+  - Downloading laravel/fortify (v1.36.2)
+  - Downloading laravel/pint (v1.30.4)
+  - Downloading symfony/yaml (v7.4.15)
+  - Downloading laravel/sail (v1.66.0)
+  - Downloading laravel/sanctum (v3.3.3)
+  - Downloading nikic/php-parser (v5.8.0)
+  - Downloading psy/psysh (v0.12.24)
+  - Downloading laravel/tinker (v2.11.1)
+  - Downloading hamcrest/hamcrest-php (v3.0.0)
+  - Downloading mockery/mockery (1.6.13)
+  - Downloading filp/whoops (2.18.4)
+  - Downloading nunomaduro/collision (v7.12.0)
+  - Downloading sebastian/version (4.0.1)
+  - Downloading sebastian/type (4.0.0)
+  - Downloading sebastian/recursion-context (5.0.2)
+  - Downloading sebastian/object-reflector (3.0.0)
+  - Downloading sebastian/object-enumerator (5.0.0)
+  - Downloading sebastian/global-state (6.0.2)
+  - Downloading sebastian/exporter (5.1.4)
+  - Downloading sebastian/environment (6.1.0)
+  - Downloading sebastian/diff (5.1.1)
+  - Downloading sebastian/comparator (5.0.5)
+  - Downloading sebastian/code-unit (2.0.0)
+  - Downloading sebastian/cli-parser (2.0.1)
+  - Downloading phpunit/php-timer (6.0.0)
+  - Downloading phpunit/php-text-template (3.0.1)
+  - Downloading phpunit/php-invoker (4.0.0)
+  - Downloading phpunit/php-file-iterator (4.1.0)
+  - Downloading theseer/tokenizer (1.3.1)
+  - Downloading sebastian/lines-of-code (2.0.2)
+  - Downloading sebastian/complexity (3.2.0)
+  - Downloading sebastian/code-unit-reverse-lookup (3.0.0)
+  - Downloading phpunit/php-code-coverage (10.1.16)
+  - Downloading phar-io/version (3.2.1)
+  - Downloading phar-io/manifest (2.0.4)
+  - Downloading myclabs/deep-copy (1.14.0)
+  - Downloading phpunit/phpunit (10.5.64)
+  - Downloading spatie/error-solutions (1.1.3)
+  - Downloading spatie/backtrace (1.8.2)
+  - Downloading spatie/flare-client-php (1.11.1)
+  - Downloading spatie/ignition (1.16.0)
+  - Downloading spatie/laravel-ignition (2.9.1)
+   0/115 [>---------------------------]   0%
+
+--- Composer出力 ---
+
+  15/115 [===>------------------------]  13%
+  24/115 [=====>----------------------]  20%
+  35/115 [========>-------------------]  30%
+  46/115 [===========>----------------]  40%
+  58/115 [==============>-------------]  50%
+  69/115 [================>-----------]  60%
+  75/115 [==================>---------]  65%
+  81/115 [===================>--------]  70%
+  92/115 [======================>-----]  80%
+ 105/115 [=========================>--]  91%
+ 113/115 [===========================>]  98%
+ 114/115 [===========================>]  99%
+
+--- Composer出力 ---
+
+ 115/115 [============================] 100%
+  - Installing dasprid/enum (1.0.7): Extracting archive
+  - Installing doctrine/inflector (2.1.0): Extracting archive
+  - Installing doctrine/lexer (3.0.1): Extracting archive
+  - Installing dragonmantank/cron-expression (v3.6.0): Extracting archive
+  - Installing symfony/deprecation-contracts (v3.7.1): Extracting archive
+  - Installing psr/container (2.0.2): Extracting archive
+  - Installing fakerphp/faker (v1.24.1): Extracting archive
+  - Installing symfony/polyfill-php83 (v1.41.0): Extracting archive
+  - Installing symfony/polyfill-mbstring (v1.38.2): Extracting archive
+  - Installing symfony/http-foundation (v6.4.43): Extracting archive
+  - Installing fruitcake/php-cors (v1.4.0): Extracting archive
+  - Installing symfony/polyfill-php80 (v1.37.0): Extracting archive
+  - Installing psr/http-message (2.0): Extracting archive
+  - Installing psr/http-client (1.0.3): Extracting archive
+  - Installing ralouphie/getallheaders (3.0.3): Extracting archive
+  - Installing psr/http-factory (1.1.0): Extracting archive
+  - Installing guzzlehttp/psr7 (2.13.0): Extracting archive
+  - Installing guzzlehttp/promises (2.5.2): Extracting archive
+  - Installing guzzlehttp/guzzle (7.15.3): Extracting archive
+  - Installing guzzlehttp/uri-template (v1.0.10): Extracting archive
+  - Installing paragonie/constant_time_encoding (v3.1.3): Extracting archive
+  - Installing pragmarx/google2fa (v9.1.0): Extracting archive
+  - Installing voku/portable-ascii (2.1.1): Extracting archive
+  - Installing symfony/polyfill-ctype (v1.37.0): Extracting archive
+  - Installing phpoption/phpoption (1.9.5): Extracting archive
+  - Installing graham-campbell/result-type (v1.1.4): Extracting archive
+  - Installing vlucas/phpdotenv (v5.6.4): Extracting archive
+  - Installing symfony/css-selector (v7.4.9): Extracting archive
+  - Installing tijsverkoyen/css-to-inline-styles (v2.4.0): Extracting archive
+  - Installing symfony/var-dumper (v6.4.43): Extracting archive
+  - Installing symfony/polyfill-uuid (v1.37.0): Extracting archive
+  - Installing symfony/uid (v6.4.32): Extracting archive
+  - Installing symfony/routing (v6.4.43): Extracting archive
+  - Installing symfony/process (v6.4.41): Extracting archive
+  - Installing symfony/polyfill-intl-normalizer (v1.38.0): Extracting archive
+  - Installing symfony/polyfill-intl-idn (v1.38.1): Extracting archive
+  - Installing symfony/mime (v6.4.43): Extracting archive
+  - Installing symfony/service-contracts (v3.7.1): Extracting archive
+  - Installing psr/event-dispatcher (1.0.0): Extracting archive
+  - Installing symfony/event-dispatcher-contracts (v3.7.1): Extracting archive
+  - Installing symfony/event-dispatcher (v7.4.15): Extracting archive
+  - Installing psr/log (3.0.2): Extracting archive
+  - Installing egulias/email-validator (4.0.4): Extracting archive
+  - Installing symfony/mailer (v6.4.43): Extracting archive
+  - Installing symfony/error-handler (v6.4.43): Extracting archive
+  - Installing symfony/http-kernel (v6.4.43): Extracting archive
+  - Installing symfony/finder (v6.4.42): Extracting archive
+  - Installing symfony/polyfill-intl-grapheme (v1.41.0): Extracting archive
+  - Installing symfony/string (v7.4.15): Extracting archive
+  - Installing symfony/console (v6.4.43): Extracting archive
+  - Installing ramsey/collection (2.1.1): Extracting archive
+  - Installing brick/math (0.12.3): Extracting archive
+  - Installing ramsey/uuid (4.9.3): Extracting archive
+  - Installing psr/simple-cache (3.0.0): Extracting archive
+  - Installing nunomaduro/termwind (v1.17.0): Extracting archive
+  - Installing symfony/translation-contracts (v3.7.1): Extracting archive
+  - Installing symfony/translation (v6.4.42): Extracting archive
+  - Installing psr/clock (1.0.0): Extracting archive
+  - Installing carbonphp/carbon-doctrine-types (2.1.0): Extracting archive
+  - Installing nesbot/carbon (2.73.0): Extracting archive
+  - Installing monolog/monolog (3.10.0): Extracting archive
+  - Installing league/mime-type-detection (1.17.0): Extracting archive
+  - Installing league/flysystem (3.35.2): Extracting archive
+  - Installing league/flysystem-local (3.31.0): Extracting archive
+  - Installing nette/utils (v4.1.5): Extracting archive
+  - Installing nette/schema (v1.3.5): Extracting archive
+  - Installing dflydev/dot-access-data (v3.0.3): Extracting archive
+  - Installing league/config (v1.2.0): Extracting archive
+  - Installing league/commonmark (2.10.0): Extracting archive
+  - Installing laravel/serializable-closure (v1.3.7): Extracting archive
+  - Installing laravel/framework (v10.50.3): Extracting archive
+  - Installing laravel/prompts (v0.1.25): Extracting archive
+  - Installing bacon/bacon-qr-code (v3.1.1): Extracting archive
+  - Installing laravel/fortify (v1.36.2): Extracting archive
+  - Installing laravel/pint (v1.30.4): Extracting archive
+  - Installing symfony/yaml (v7.4.15): Extracting archive
+  - Installing laravel/sail (v1.66.0): Extracting archive
+  - Installing laravel/sanctum (v3.3.3): Extracting archive
+  - Installing nikic/php-parser (v5.8.0): Extracting archive
+  - Installing psy/psysh (v0.12.24): Extracting archive
+  - Installing laravel/tinker (v2.11.1): Extracting archive
+  - Installing hamcrest/hamcrest-php (v3.0.0): Extracting archive
+  - Installing mockery/mockery (1.6.13): Extracting archive
+  - Installing filp/whoops (2.18.4): Extracting archive
+  - Installing nunomaduro/collision (v7.12.0): Extracting archive
+  - Installing sebastian/version (4.0.1): Extracting archive
+  - Installing sebastian/type (4.0.0): Extracting archive
+  - Installing sebastian/recursion-context (5.0.2): Extracting archive
+  - Installing sebastian/object-reflector (3.0.0): Extracting archive
+  - Installing sebastian/object-enumerator (5.0.0): Extracting archive
+  - Installing sebastian/global-state (6.0.2): Extracting archive
+  - Installing sebastian/exporter (5.1.4): Extracting archive
+  - Installing sebastian/environment (6.1.0): Extracting archive
+  - Installing sebastian/diff (5.1.1): Extracting archive
+  - Installing sebastian/comparator (5.0.5): Extracting archive
+  - Installing sebastian/code-unit (2.0.0): Extracting archive
+  - Installing sebastian/cli-parser (2.0.1): Extracting archive
+  - Installing phpunit/php-timer (6.0.0): Extracting archive
+  - Installing phpunit/php-text-template (3.0.1): Extracting archive
+  - Installing phpunit/php-invoker (4.0.0): Extracting archive
+  - Installing phpunit/php-file-iterator (4.1.0): Extracting archive
+  - Installing theseer/tokenizer (1.3.1): Extracting archive
+  - Installing sebastian/lines-of-code (2.0.2): Extracting archive
+  - Installing sebastian/complexity (3.2.0): Extracting archive
+  - Installing sebastian/code-unit-reverse-lookup (3.0.0): Extracting archive
+  - Installing phpunit/php-code-coverage (10.1.16): Extracting archive
+  - Installing phar-io/version (3.2.1): Extracting archive
+  - Installing phar-io/manifest (2.0.4): Extracting archive
+  - Installing myclabs/deep-copy (1.14.0): Extracting archive
+  - Installing phpunit/phpunit (10.5.64): Extracting archive
+  - Installing spatie/error-solutions (1.1.3): Extracting archive
+  - Installing spatie/backtrace (1.8.2): Extracting archive
+  - Installing spatie/flare-client-php (1.11.1): Extracting archive
+  - Installing spatie/ignition (1.16.0): Extracting archive
+  - Installing spatie/laravel-ignition (2.9.1): Extracting archive
+   0/115 [>---------------------------]   0%
+  18/115 [====>-----------------------]  15%
+  28/115 [======>---------------------]  24%
+  39/115 [=========>------------------]  33%
+  52/115 [============>---------------]  45%
+  58/115 [==============>-------------]  50%
+  72/115 [=================>----------]  62%
+  83/115 [====================>-------]  72%
+  99/115 [========================>---]  86%
+ 104/115 [=========================>--]  90%
+ 115/115 [============================] 100%
+Generating optimized autoload files
+> Illuminate\Foundation\ComposerScripts::postAutoloadDump
+> @php artisan package:discover --ansi
+
+   INFO  Discovering packages.
+
+  laravel/fortify ....................................................... DONE
+  laravel/sail .......................................................... DONE
+  laravel/sanctum ....................................................... DONE
+  laravel/tinker ........................................................ DONE
+  nesbot/carbon ......................................................... DONE
+  nunomaduro/collision .................................................. DONE
+  nunomaduro/termwind ................................................... DONE
+  spatie/laravel-ignition ............................................... DONE
+
+80 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+
+exit_code: 0
+
+--- README: 設定例のコピー ---
+$ cp .env.example .env
+
+exit_code: 0
+
+--- README手順3に記載された設定ファイル編集 ---
+README記載の設定例: {"COMPOSE_PROJECT_NAME":"teamchat_readme_check","APP_PORT":8081,"FORWARD_DB_PORT":3307,"VITE_PORT":5174,"APP_URL":"http://localhost:8081"}
+
+--- README: 初回起動 ---
+$ ./vendor/bin/sail up -d
+
+
+--- 初回起動出力 ---
+ Network teamchat_readme_check_sail Creating
+ Volume teamchat_readme_check_sail-mysql Creating
+ Volume teamchat_readme_check_sail-mysql Creating
+ Network teamchat_readme_check_sail Creating
+ Volume teamchat_readme_check_sail-mysql Created
+ Volume teamchat_readme_check_sail-mysql Created
+ Network teamchat_readme_check_sail Created
+ Network teamchat_readme_check_sail Created
+ Container teamchat_readme_check-mysql-1 Creating
+ Container teamchat_readme_check-mysql-1 Created
+ Container teamchat_readme_check-laravel.test-1 Creating
+ Container teamchat_readme_check-laravel.test-1 Created
+ Container teamchat_readme_check-mysql-1 Starting
+ Container teamchat_readme_check-mysql-1 Started
+ Container teamchat_readme_check-laravel.test-1 Starting
+ Container teamchat_readme_check-laravel.test-1 Started
+
+exit_code: 0
+
+--- README: 初回の状態確認 ---
+$ ./vendor/bin/sail ps
+
+
+--- 初回の状態確認出力 ---
+NAME                                   IMAGE          COMMAND                  SERVICE        CREATED          STATUS                             PORTS
+teamchat_readme_check-laravel.test-1   sail-8.5/app   "start-container"        laravel.test   18 seconds ago   Up 18 seconds                      0.0.0.0:5174->5174/tcp, [::]:5174->5174/tcp, 0.0.0.0:8081->80/tcp, [::]:8081->80/tcp
+teamchat_readme_check-mysql-1          mysql:8.4      "docker-entrypoint.s…"   mysql          18 seconds ago   Up 18 seconds (health: starting)   0.0.0.0:3307->3306/tcp, [::]:3307->3306/tcp
+
+exit_code: 0
+
+--- README: MySQL起動待ちの再確認 ---
+$ ./vendor/bin/sail ps
+NAME                                   IMAGE          COMMAND                  SERVICE        CREATED              STATUS                        PORTS
+teamchat_readme_check-laravel.test-1   sail-8.5/app   "start-container"        laravel.test   About a minute ago   Up About a minute             0.0.0.0:5174->5174/tcp, [::]:5174->5174/tcp, 0.0.0.0:8081->80/tcp, [::]:8081->80/tcp
+teamchat_readme_check-mysql-1          mysql:8.4      "docker-entrypoint.s…"   mysql          About a minute ago   Up About a minute (healthy)   0.0.0.0:3307->3306/tcp, [::]:3307->3306/tcp
+
+
+--- MySQL起動待ちの再確認出力 ---
+
+exit_code: 0
+
+--- README: キー生成 ---
+$ ./vendor/bin/sail artisan key:generate
+
+
+--- キー生成出力 ---
+
+   INFO  Application key set successfully.
+
+
+exit_code: 0
+
+--- README: 初回マイグレーションと初期データ ---
+$ ./vendor/bin/sail artisan migrate --seed
+
+
+--- 初回マイグレーション出力 ---
+
+   INFO  Preparing database.
+
+  Creating migration table .......................................... 8ms DONE
+
+   INFO  Running migrations.
+
+  2014_10_12_000000_create_users_table ............................. 10ms DONE
+  2014_10_12_100000_create_password_reset_tokens_table .............. 4ms DONE
+  2019_08_19_000000_create_failed_jobs_table ........................ 8ms DONE
+  2019_12_14_000001_create_personal_access_tokens_table ............ 12ms DONE
+  2026_10_29_000000_align_users_with_authentication_design ......... 14ms DONE
+  2026_10_30_000000_create_channels_table .......................... 24ms DONE
+  2026_10_30_000001_create_channel_user_table ...................... 28ms DONE
+  2026_10_30_000002_create_messages_table .......................... 63ms DONE
+  2026_11_05_000000_add_joined_order_to_channel_user_table ......... 19ms DONE
+
+
+   INFO  Seeding database.
+
+  Database\Seeders\AuthUserSeeder .................................... RUNNING
+  Database\Seeders\AuthUserSeeder ................................ 253 ms DONE
+
+  Database\Seeders\ChannelSeeder ..................................... RUNNING
+  Database\Seeders\ChannelSeeder ................................... 9 ms DONE
+
+  Database\Seeders\MessageSeeder ..................................... RUNNING
+  Database\Seeders\MessageSeeder .................................. 14 ms DONE
+
+
+exit_code: 0
+
+--- README: 通常停止 ---
+$ ./vendor/bin/sail stop
+
+
+--- 通常停止出力 ---
+ Container teamchat_readme_check-laravel.test-1 Stopping
+ Container teamchat_readme_check-laravel.test-1 Stopped
+ Container teamchat_readme_check-mysql-1 Stopping
+ Container teamchat_readme_check-mysql-1 Stopped
+
+exit_code: 0
+
+--- README: 通常再開 ---
+$ ./vendor/bin/sail up -d
+
+
+--- 通常再開出力 ---
+ Container teamchat_readme_check-mysql-1 Starting
+ Container teamchat_readme_check-mysql-1 Started
+ Container teamchat_readme_check-laravel.test-1 Starting
+ Container teamchat_readme_check-laravel.test-1 Started
+
+exit_code: 0
+
+--- README: 破棄可能な検証用DBの削除 ---
+$ ./vendor/bin/sail down -v
+ Container teamchat_readme_check-laravel.test-1 Stopping
+
+
+--- 検証用DB削除出力 ---
+ Container teamchat_readme_check-laravel.test-1 Stopped
+ Container teamchat_readme_check-laravel.test-1 Removing
+ Container teamchat_readme_check-laravel.test-1 Removed
+ Container teamchat_readme_check-mysql-1 Stopping
+ Container teamchat_readme_check-mysql-1 Stopped
+ Container teamchat_readme_check-mysql-1 Removing
+ Container teamchat_readme_check-mysql-1 Removed
+ Network teamchat_readme_check_sail Removing
+ Volume teamchat_readme_check_sail-mysql Removing
+ Volume teamchat_readme_check_sail-mysql Removed
+ Network teamchat_readme_check_sail Removed
+
+exit_code: 0
+
+--- README: DB削除後の起動 ---
+$ ./vendor/bin/sail up -d
+ Network teamchat_readme_check_sail Creating
+ Network teamchat_readme_check_sail Creating
+ Volume teamchat_readme_check_sail-mysql Creating
+ Volume teamchat_readme_check_sail-mysql Creating
+ Volume teamchat_readme_check_sail-mysql Created
+ Volume teamchat_readme_check_sail-mysql Created
+ Network teamchat_readme_check_sail Created
+ Network teamchat_readme_check_sail Created
+ Container teamchat_readme_check-mysql-1 Creating
+
+
+--- DB削除後の起動出力 ---
+ Container teamchat_readme_check-mysql-1 Created
+ Container teamchat_readme_check-laravel.test-1 Creating
+ Container teamchat_readme_check-laravel.test-1 Created
+ Container teamchat_readme_check-mysql-1 Starting
+ Container teamchat_readme_check-mysql-1 Started
+ Container teamchat_readme_check-laravel.test-1 Starting
+ Container teamchat_readme_check-laravel.test-1 Started
+
+exit_code: 0
+
+--- README: DB再作成後の状態確認 ---
+$ ./vendor/bin/sail ps
+NAME                                   IMAGE          COMMAND                  SERVICE        CREATED          STATUS                             PORTS
+teamchat_readme_check-laravel.test-1   sail-8.5/app   "start-container"        laravel.test   15 seconds ago   Up 14 seconds                      0.0.0.0:5174->5174/tcp, [::]:5174->5174/tcp, 0.0.0.0:8081->80/tcp, [::]:8081->80/tcp
+teamchat_readme_check-mysql-1          mysql:8.4      "docker-entrypoint.s…"   mysql          15 seconds ago   Up 14 seconds (health: starting)   0.0.0.0:3307->3306/tcp, [::]:3307->3306/tcp
+
+
+--- DB再作成後の状態確認出力 ---
+
+exit_code: 0
+
+--- README: DB再作成後の起動待ち再確認 ---
+$ ./vendor/bin/sail ps
+NAME                                   IMAGE          COMMAND                  SERVICE        CREATED              STATUS                        PORTS
+teamchat_readme_check-laravel.test-1   sail-8.5/app   "start-container"        laravel.test   About a minute ago   Up About a minute             0.0.0.0:5174->5174/tcp, [::]:5174->5174/tcp, 0.0.0.0:8081->80/tcp, [::]:8081->80/tcp
+teamchat_readme_check-mysql-1          mysql:8.4      "docker-entrypoint.s…"   mysql          About a minute ago   Up About a minute (healthy)   0.0.0.0:3307->3306/tcp, [::]:3307->3306/tcp
+
+
+--- DB再作成後の起動待ち再確認出力 ---
+
+exit_code: 0
+
+--- README: DB再作成のマイグレーションと初期データ ---
+$ ./vendor/bin/sail artisan migrate --seed
+
+
+--- DB再作成マイグレーション出力 ---
+
+   INFO  Preparing database.
+
+  Creating migration table .......................................... 8ms DONE
+
+   INFO  Running migrations.
+
+  2014_10_12_000000_create_users_table .............................. 9ms DONE
+  2014_10_12_100000_create_password_reset_tokens_table .............. 6ms DONE
+  2019_08_19_000000_create_failed_jobs_table ........................ 9ms DONE
+  2019_12_14_000001_create_personal_access_tokens_table ............ 10ms DONE
+  2026_10_29_000000_align_users_with_authentication_design ......... 12ms DONE
+  2026_10_30_000000_create_channels_table .......................... 21ms DONE
+  2026_10_30_000001_create_channel_user_table ...................... 27ms DONE
+  2026_10_30_000002_create_messages_table .......................... 60ms DONE
+  2026_11_05_000000_add_joined_order_to_channel_user_table ......... 20ms DONE
+
+
+   INFO  Seeding database.
+
+  Database\Seeders\AuthUserSeeder .................................... RUNNING
+  Database\Seeders\AuthUserSeeder ................................ 253 ms DONE
+
+  Database\Seeders\ChannelSeeder ..................................... RUNNING
+  Database\Seeders\ChannelSeeder ................................... 9 ms DONE
+
+  Database\Seeders\MessageSeeder ..................................... RUNNING
+  Database\Seeders\MessageSeeder .................................. 14 ms DONE
+
+
+exit_code: 0
